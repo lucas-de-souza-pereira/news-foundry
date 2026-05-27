@@ -1,0 +1,118 @@
+# ==============================================================================
+# Python / uv (Backend)
+# ==============================================================================
+# Caches de bytecode Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / Packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environnements virtuels
+.venv/
+venv/
+ENV/
+env/
+
+# Caches d'outils (Ruff, pytest, mypy, etc.)
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# ==============================================================================
+# Node / Next.js (Frontend)
+# ==============================================================================
+# Dépendances Node
+node_modules/
+.npm/
+
+# Fichiers de build et cache Next.js
+.next/
+out/
+
+# Yarn (si utilisé)
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Fichiers de logs npm / yarn
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Builds TypeScript
+*.tsbuildinfo
+
+# ==============================================================================
+# Environnement & Secrets (Sécurité)
+# ==============================================================================
+# Fichiers contenant des secrets (ne jamais commiter)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+*.env.local
+
+# Clés et certificats de sécurité
+*.pem
+*.key
+*.cert
+
+# ==============================================================================
+# Systèmes d'exploitation & IDE
+# ==============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# JetBrains (PyCharm, WebStorm, etc.)
+.idea/
+
+# VS Code (ignorer la config perso mais préserver les partagées)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Documentation du projet
+_docs/
+
+# ==============================================================================
+# Docker & Bases de données
+# ==============================================================================
+postgres_data/
+*.db
+*.sqlite
