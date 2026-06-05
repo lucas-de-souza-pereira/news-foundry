@@ -2,10 +2,11 @@ import { apiFetch } from "@/lib/api/client";
 import { StorageUtility, StorageKeys } from "@/lib/local-storage";
 import { LoginCredentials, TokenResponse } from "@/lib/validation/auth";
 import { ActionResult } from "@/lib/validation/action";
+import { API_ROUTES } from "@/lib/routes";
 
 export async function loginAction(credentials: LoginCredentials): Promise<ActionResult<TokenResponse>> {
     try {
-        const data = await apiFetch<TokenResponse>("/api/auth/login", {
+        const data = await apiFetch<TokenResponse>(API_ROUTES.AUTH.LOGIN, {
             method: "POST",
             body: JSON.stringify(credentials),
         });
