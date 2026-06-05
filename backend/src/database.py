@@ -19,17 +19,6 @@ def init_db():
         statement = select(User).where(User.email == default_email)
         user = session.exec(statement).first()
 
-        # If user exists but the password hash is invalid (Bcrypt hash must start with $2a$, $2b$ or $2y$), reset it
-        if user and not (
-            user.hashed_password.startswith("$2a$") or 
-            user.hashed_password.startswith("$2b$") or 
-            user.hashed_password.startswith("$2y$")
-        ):
-            print("Invalid/Corrupted default user password hash detected. Resetting user...")
-            session.delete(user)
-            session.commit()
-            user = None
-
         if not user:
             session.add(
                 User(

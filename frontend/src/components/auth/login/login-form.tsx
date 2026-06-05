@@ -3,11 +3,14 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 import { loginAction } from "@/lib/actions/auth";
 import { LoginCredentials } from "@/lib/validation/auth";
+import { APP_ROUTES } from "@/lib/routes";
 
 export default function LoginForm() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +32,7 @@ export default function LoginForm() {
     if (res.success) {
       setSuccess("Connexion réussie");
       setError(null);
+      // router.push(APP_ROUTES.HOME);
     } else {
       setError(res.error);
       setSuccess(null);

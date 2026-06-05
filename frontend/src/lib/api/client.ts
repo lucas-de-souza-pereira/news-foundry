@@ -1,4 +1,5 @@
-const API_URL = process.env.API_URL ?? "http://localhost:8000";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 type FetchOptions = RequestInit & {
   token?: string;
@@ -25,6 +26,7 @@ export async function apiFetch<T>(
   try {
     data = await res.json();
   } catch {
+    throw new Error("Impossible de contacter le serveur. Veuillez vérifier votre connexion ou le statut du serveur.");
   }
 
   if (res.status === 401 && !path.includes("/auth/")) {
