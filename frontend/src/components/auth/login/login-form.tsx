@@ -30,6 +30,7 @@ export default function LoginForm() {
 
     if (!credentials.email || !credentials.password) {
       setError("L'email et mot de passe sont requis");
+      setIsSubmitting(false);
       return;
     }
 
@@ -37,14 +38,14 @@ export default function LoginForm() {
     if (res.success) {
       setSuccess("Connexion réussie");
       setError(null);
-      // router.push(APP_ROUTES.HOME);
+
+      router.push(APP_ROUTES.HOME);
     }
 
     if (!res.success) {
       setError(res.error);
       setSuccess(null);
     }
-
     setIsSubmitting(false);
   };
 
