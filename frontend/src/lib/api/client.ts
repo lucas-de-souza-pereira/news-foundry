@@ -17,16 +17,21 @@ export async function apiFetch<T>(
     ...((fetchOptions.headers as Record<string, string>) ?? {}),
   };
 
-  const res = await fetch(`${API_URL}${path}`, {
-    ...fetchOptions,
-    headers,
-  });
+  let res: Response
+
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      ...fetchOptions,
+      headers,
+    });
+  } catch (err) {
+    throw new Error("Impossible de contacter le serveur. Veuillez vérifier votre connexion ou le statut du serveur.");
+  }
 
   let data: any = null;
   try {
     data = await res.json();
   } catch {
-    throw new Error("Impossible de contacter le serveur. Veuillez vérifier votre connexion ou le statut du serveur.");
   }
 
   if (res.status === 401 && !path.includes("/auth/")) {

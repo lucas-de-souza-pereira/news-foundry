@@ -15,6 +15,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +23,10 @@ export default function LoginForm() {
       email,
       password,
     };
+
+    setIsSubmitting(true);
+    setError(null);
+    setSuccess(null);
 
     if (!credentials.email || !credentials.password) {
       setError("L'email et mot de passe sont requis");
@@ -33,10 +38,14 @@ export default function LoginForm() {
       setSuccess("Connexion réussie");
       setError(null);
       // router.push(APP_ROUTES.HOME);
-    } else {
+    }
+
+    if (!res.success) {
       setError(res.error);
       setSuccess(null);
     }
+
+    setIsSubmitting(false);
   };
 
   return (
@@ -60,8 +69,8 @@ export default function LoginForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button type="submit" aria-label="Se connecter">
-        Se connecter
+      <Button type="submit" aria-label="Se connecter" disabled={isSubmitting}>
+        {isSubmitting ? "Connexion en cours..." : "Se connecter"}
       </Button>
     </form>
   );
