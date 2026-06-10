@@ -13,3 +13,10 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     # Schema representing decoded token payload
     email: str | None = None
+
+
+class CreateConversation(BaseModel):
+    content:str
+
+class MessageCreate(BaseModel):
+    content: str

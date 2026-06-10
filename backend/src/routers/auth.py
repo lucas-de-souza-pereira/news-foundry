@@ -13,8 +13,10 @@ from security import (
     ALGORITHM,
 )
 
-router = APIRouter(prefix="/api/auth", tags=["Authentication"])
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
+from utils.routes import API_ROUTES
+
+router = APIRouter(prefix=API_ROUTES["login"], tags=["Authentication"])
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=API_ROUTES["login"])
 
 @router.post("/login", response_model=Token)
 def login(credentials: LoginRequest, db: Session = Depends(get_db)):
