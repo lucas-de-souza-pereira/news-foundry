@@ -35,8 +35,12 @@ export async function apiFetch<T>(
   }
 
   if (res.status === 401 && !path.includes("/auth/")) {
-    const { redirect } = await import("next/navigation");
-    redirect("/login?expired=1");
+    if (typeof window !== "undefined") {
+      const { StorageUtility, StorageKeys } = await import("@/lib/local-storage");
+      StorageUtility.removeItem(StorageKeys.SESSION_TOKEN);
+      window.location.href = "/login?expired=1";
+      return {} as T; 
+    }
   }
 
   if (!res.ok) {
