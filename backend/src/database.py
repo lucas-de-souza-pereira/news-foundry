@@ -1,5 +1,5 @@
 import os
-from models import User, Conversation, Message, AiModel, PromptSystem, SenderRole
+from models import User, Conversation, Message, SenderRole
 from sqlmodel import SQLModel, Session, create_engine, select
 from security import hash_password
 
