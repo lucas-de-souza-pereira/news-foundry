@@ -6,6 +6,19 @@ from security import hash_password
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL, echo=True)
 
+def sender_role_init(session: Session, role: str):
+    statement = select(SenderRole).where(SenderRole.role == role)
+    result = session.exec(statement).first()
+    
+    if not result:
+        session.add(
+            SenderRole(
+                role=role,
+            )
+        )
+        session.commit()
+        print(f"Default sender role {role} created successfully")    
+
 
 def init_db():
     SQLModel.metadata.create_all(engine)
@@ -29,7 +42,9 @@ def init_db():
             session.commit()
             print("Default user created successfully with correct password hash format")
 
-
+        sender_role_init(session, "user")
+        sender_role_init(session, "assistant")
+    
 def get_db():
     with Session(engine) as session:
         yield session

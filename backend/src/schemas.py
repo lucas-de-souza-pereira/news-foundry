@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from datetime import datetime
+
 
 class LoginRequest(BaseModel):
     # Schema for the login request body, containing email and password
@@ -15,8 +17,16 @@ class TokenData(BaseModel):
     email: str | None = None
 
 
-class CreateConversation(BaseModel):
-    content:str
+class ConversationStartRequest(BaseModel):
+    first_message:str
+
+
+class ConversationRead(BaseModel):
+    id: int
+    user_id: int
+    date: datetime
+    class Config:
+        from_attributes = True
 
 class MessageCreate(BaseModel):
     content: str

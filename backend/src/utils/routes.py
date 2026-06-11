@@ -1,5 +1,13 @@
-API_ROUTES = {
-    "login": "/api/auth/login",
-    "new_conversation": "/api/chat/new_conversation",
-    "add_message": "/api/chat/add_message",
+API_BASE_ROUTE = {
+    "auth": "/api/auth/",
+    "chat": "/api/chat/",
+}
+
+AUTH_ROUTES = {
+    "login": "/login",
+}
+
+CHAT_ROUTES = {
+    "conversations": "/conversations",
+    "messages": "/conversations/{conversation_id}/messages",
 }

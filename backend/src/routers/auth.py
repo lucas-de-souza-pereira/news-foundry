@@ -12,13 +12,12 @@ from security import (
     SECRET_KEY,
     ALGORITHM,
 )
+from utils.routes import API_BASE_ROUTE, AUTH_ROUTES
 
-from utils.routes import API_ROUTES
+router = APIRouter(prefix=API_BASE_ROUTE["auth"], tags=["Authentication"])
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=API_BASE_ROUTE["auth"] + AUTH_ROUTES["login"])
 
-router = APIRouter(prefix=API_ROUTES["login"], tags=["Authentication"])
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=API_ROUTES["login"])
-
-@router.post("/login", response_model=Token)
+@router.post(AUTH_ROUTES["login"], response_model=Token)
 def login(credentials: LoginRequest, db: Session = Depends(get_db)):
     statement = select(User).where(User.email == credentials.email)
     user = db.exec(statement).first()
