@@ -1,6 +1,6 @@
 API_BASE_ROUTE = {
     "auth": "/api/auth",
-    "chat": "/api/chat",
+    "chats": "/api/chats",
 }
 
 AUTH_ROUTES = {

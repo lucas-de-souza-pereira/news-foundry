@@ -3,7 +3,9 @@ export const API_ROUTES = {
     LOGIN: "/api/auth/login",
   },
   CHAT: {
-    START: "/api/chat/conversations",
+    START: "/api/chats/",
+    GET_ALL: "/api/chats/",
+    GET: (id: number) => `/api/chats/${id}`,
   }
 } as const;
 
