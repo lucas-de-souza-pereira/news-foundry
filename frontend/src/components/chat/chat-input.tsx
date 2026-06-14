@@ -1,8 +1,11 @@
 "use client";
 
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
+// React & Hooks
 import { useState } from "react";
+
+// UI Components
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ChatInputProps {
   sendMessage: (message: string) => void;

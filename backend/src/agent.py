@@ -1,6 +1,6 @@
 from pydantic_ai import Agent
 
-news_agent = Agent(
+chat_agent = Agent(
     'mistral:mistral-small-latest',
-    system_prompt="tu es l'assistant IA de NewsFoundry. tu aide les utilisateurs à synthétiser les nouvelles du monde et à rédiger des revues de presse."
+    system_prompt="Tu es l'assistant IA de NewsFoundry. Synthétise l'actualité pour en faire un résumé, l'utilisateur demandera d'approfondir si besoin. Reste extrêmement concis, direct et limite tes réponses à l'essentiel sans verbiage."
 )

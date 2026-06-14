@@ -1,81 +1,96 @@
 import { apiFetch } from "@/lib/api/client";
 import { ActionResult } from "@/lib/validation/action";
 import { API_ROUTES } from "@/lib/routes";
+import {
+  ChatCreateResquest,
+  ChatResponse,
+  ChatDetailResponse,
+  MessageSendRequest,
+  MessageSendResponse,
+  ChatDetailRequest,
+} from "../validation/chat";
+import { AuthToken } from "../validation/auth";
 
-export interface MessageCreateRequest {
-    first_message: string;
+export async function startChatAction(
+  request: ChatCreateResquest,
+  token: AuthToken,
+): Promise<ActionResult<ChatResponse>> {
+  try {
+    const data = await apiFetch<ChatResponse>(API_ROUTES.CHAT.START, {
+      method: "POST",
+      body: JSON.stringify(request),
+      token,
+    });
+
+    return { success: true, data };
+  } catch (err) {
+    const message =
+      err instanceof Error
+        ? err.message
+        : "Erreur lors de la création de la conversation";
+    return { success: false, error: message };
+  }
 }
 
+export async function getAllChatAction(
+  token: AuthToken,
+): Promise<ActionResult<ChatResponse[]>> {
+  try {
+    const data = await apiFetch<ChatResponse[]>(API_ROUTES.CHAT.GET_ALL, {
+      method: "GET",
+      token,
+    });
 
-export interface ChatMessage {
-    role: "user" | "model";
-    content: string;
-    timestamp: string
+    return { success: true, data };
+  } catch (err) {
+    const message =
+      err instanceof Error
+        ? err.message
+        : "Erreur lors de la récupération des conversations";
+    return { success: false, error: message };
+  }
 }
 
-export interface ConversationResponse {
-    id: number;
-    user_id: number;
-    created_at: string;
-}
-
-export async function startConversationAction(
-    request: MessageCreateRequest,
-    token: string,
-): Promise<ActionResult<ConversationResponse>> {
-    try {
-        const data = await apiFetch<ConversationResponse>(API_ROUTES.CHAT.START, {
-            method: "POST",
-            body: JSON.stringify(request),
-            token,
-        });
-
-        return { success: true, data };
-    } catch (err) {
-        const message =
-            err instanceof Error ? err.message : "Erreur lors de la création de la conversation";
-        return { success: false, error: message };
-    }
-}
-
-export async function getAllConversationAction(token:string): Promise<ActionResult<ConversationResponse[]>> {
-    try{
-        const data = await apiFetch<ConversationResponse[]>(API_ROUTES.CHAT.GET_ALL, {
-            method: "GET",
-            token,
-        });
-
-        return { success: true, data };
-    } catch (err) {
-        const message =
-            err instanceof Error ? err.message : "Erreur lors de la récupération des conversations";
-        return { success: false, error: message };
-    }
-}
-
-
-export interface ChatDetailResponse {
-    id: number;
-    user_id: number;
-    created_at: string;
-    history: ChatMessage[];
-}
-
-export async function getConversationAction(
-    token:string, 
-    conversation_id: number,
+export async function getChatAction(
+  request: ChatDetailRequest,
+  token: AuthToken,
 ): Promise<ActionResult<ChatDetailResponse>> {
-    try{
-        const data = await apiFetch<ChatDetailResponse>(API_ROUTES.CHAT.GET(conversation_id), {
-            method: "GET",
-            token,
-            
-        });
-        console.log("data get conversation", data)
-        return { success: true, data };
-    } catch (err) {
-        const message =
-            err instanceof Error ? err.message : "Erreur lors de la récupération des conversations";
-        return { success: false, error: message };
-    }
+  try {
+    const data = await apiFetch<ChatDetailResponse>(
+      API_ROUTES.CHAT.GET(request.chat_id),
+      {
+        method: "GET",
+        token,
+      },
+    );
+    console.log("data get conversation", data);
+    return { success: true, data };
+  } catch (err) {
+    const message =
+      err instanceof Error
+        ? err.message
+        : "Erreur lors de la récupération des conversations";
+    return { success: false, error: message };
+  }
+}
+
+export async function sendMessageAction(
+  request: MessageSendRequest,
+  token: AuthToken,
+): Promise<ActionResult<MessageSendResponse>> {
+  try {
+    const data = await apiFetch<MessageSendResponse>(
+      API_ROUTES.CHAT.SEND_MESSAGE(request.chat_id),
+      {
+        method: "POST",
+        body: JSON.stringify(request),
+        token,
+      },
+    );
+    return { success: true, data };
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Erreur lors de l'envoi du message";
+    return { success: false, error: message };
+  }
 }

@@ -1,40 +1,28 @@
 "use client";
 
+// Components
 import ChatInput from "@/components/chat/chat-input";
-import {
-  startConversationAction,
-  getAllConversationAction,
-  getConversationAction,
-} from "@/lib/actions/chat";
+
+// Contexts
 import { useAuth } from "@/context/auth-context";
-import { useEffect, useState } from "react";
-import { ConversationResponse } from "@/lib/actions/chat";
-import Conversation from "@/components/chat/conversation";
+
+// Actions
+import { startChatAction } from "@/lib/actions/chat";
+
+// Types
+import { ChatCreateResquest } from "@/lib/validation/chat";
 
 export default function Home() {
   const { token } = useAuth();
-  const [chats, setChats] = useState<ConversationResponse[]>([]);
 
-  useEffect(() => {
+  const handleStartNewChat = async (message: string) => {
     if (!token) return;
 
-    const loadChats = async () => {
-      const res = await getAllConversationAction(token);
-      if (res.success) {
-        setChats(res.data);
-      } else {
-        console.error(res.error);
-      }
+    const resquest: ChatCreateResquest = {
+      first_message: message,
     };
-    loadChats();
-  }, [token]);
 
-  const startConversation = async (message: string) => {
-    if (!token) return;
-    const res = await startConversationAction(
-      { first_message: message },
-      token,
-    );
+    const res = await startChatAction(resquest, token);
 
     if (res.success) {
       console.log("Conversation ID:", res.data.id);
@@ -43,32 +31,15 @@ export default function Home() {
     }
   };
 
-  // const handleSelectConversation =
-
   return (
     <div className="flex flex-row">
-      <aside>
-        <nav>
-          <ul>
-            {chats.map((c) => (
-              <li key={c.id}>
-                <Conversation conversation={c} />
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
+      <header className="flex flex-row gap-8">
+        <p>chat</p>
+        <p>revue de presse</p>
+      </header>
+      <section></section>
 
-      <main>
-        <header className="flex flex-row gap-8">
-          <p>chat</p>
-          <p>revue de presse</p>
-        </header>
-
-        <section></section>
-
-        <ChatInput sendMessage={startConversation} />
-      </main>
+      <ChatInput sendMessage={handleStartNewChat} />
     </div>
   );
 }

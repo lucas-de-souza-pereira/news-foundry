@@ -48,4 +48,4 @@ class MessageSendRequest(BaseModel):
     content: str
 
 class MessageSendResponse(BaseModel):
-    response: str
+    response: Dict[str,Any]

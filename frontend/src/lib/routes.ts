@@ -3,9 +3,10 @@ export const API_ROUTES = {
     LOGIN: "/api/auth/login",
   },
   CHAT: {
-    START: "/api/chats/",
-    GET_ALL: "/api/chats/",
+    START: "/api/chats",
+    GET_ALL: "/api/chats",
     GET: (id: number) => `/api/chats/${id}`,
+    SEND_MESSAGE: (id: number) => `/api/chats/${id}/messages`,
   }
 } as const;
 
@@ -13,4 +14,5 @@ export const API_ROUTES = {
 export const APP_ROUTES = {
   HOME: "/home",
   LOGIN: "/login",
+  CHAT: (id: number) => `/chat/${id}`,
 } as const;
