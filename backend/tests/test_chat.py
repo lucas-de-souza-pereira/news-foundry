@@ -1,4 +1,4 @@
-from utils.routes import API_BASE_ROUTE
+from utils.routes import API_BASE_ROUTE, CHAT_ROUTES
 import pytest
 import json
 from httpx import AsyncClient
@@ -16,7 +16,7 @@ async def test_create_chat_success(client: AsyncClient, auth_headers_user_1: dic
     """
     payload = {"first_message": "Bonjour, je cherche les dernières actualités politiques."}
     
-    response = await client.post(API_BASE_ROUTE["chats"], json=payload, headers=auth_headers_user_1)
+    response = await client.post(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chats"], json=payload, headers=auth_headers_user_1)
     
     assert response.status_code == 201
     data = response.json()
@@ -35,7 +35,7 @@ async def test_create_chat_unauthorized(client: AsyncClient):
     Test de création de chat sans être authentifié (doit renvoyer 401).
     """
     payload = {"first_message": "Hello"}
-    response = await client.post(API_BASE_ROUTE["chats"], json=payload)
+    response = await client.post(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chats"], json=payload)
     assert response.status_code == 401
 
 @pytest.mark.asyncio
@@ -59,7 +59,7 @@ async def test_get_chats_list(
     session.commit()
 
     # Appel avec le token de user 1
-    response_1 = await client.get(API_BASE_ROUTE["chats"], headers=auth_headers_user_1)
+    response_1 = await client.get(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chats"], headers=auth_headers_user_1)
     assert response_1.status_code == 200
     data_1 = response_1.json()
     assert len(data_1) == 1
@@ -67,7 +67,7 @@ async def test_get_chats_list(
     assert data_1[0]["user_id"] == test_user_1.id
 
     # Appel avec le token de user 2
-    response_2 = await client.get(API_BASE_ROUTE["chats"], headers=auth_headers_user_2)
+    response_2 = await client.get(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chats"], headers=auth_headers_user_2)
     assert response_2.status_code == 200
     data_2 = response_2.json()
     assert len(data_2) == 1
@@ -88,7 +88,7 @@ async def test_get_chat_by_id_owner(
     session.add(chat)
     session.commit()
 
-    response = await client.get(API_BASE_ROUTE["chat"].format(chat_id=chat.id), headers=auth_headers_user_1)
+    response = await client.get(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chat"].format(chat_id=chat.id), headers=auth_headers_user_1)
     assert response.status_code == 200
     data = response.json()
     assert data["id"] == chat.id
@@ -108,7 +108,7 @@ async def test_get_chat_by_id_unauthorized_access(
     session.add(chat_user_1)
     session.commit()
 
-    response = await client.get(API_BASE_ROUTE["chat"].format(chat_id=chat_user_1.id), headers=auth_headers_user_2)
+    response = await client.get(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chat"].format(chat_id=chat_user_1.id), headers=auth_headers_user_2)
     assert response.status_code == 403
     assert response.json()["detail"] == "You do not have access to this chat"
 
@@ -117,7 +117,7 @@ async def test_get_chat_not_found(client: AsyncClient, auth_headers_user_1: dict
     """
     Test de récupération d'un chat inexistant (renvoie 404 Not Found).
     """
-    response = await client.get(API_BASE_ROUTE["chat"].format(chat_id="99999"), headers=auth_headers_user_1)
+    response = await client.get(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chat"].format(chat_id="99999"), headers=auth_headers_user_1)
     assert response.status_code == 404
 
 @pytest.mark.asyncio
@@ -135,7 +135,7 @@ async def test_send_message_success(
     session.commit()
 
     payload = {"content": "Peux-tu approfondir ce sujet ?"}
-    response = await client.post(API_BASE_ROUTE["chat_messages"].format(chat_id=chat.id), json=payload, headers=auth_headers_user_1)
+    response = await client.post(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chat_messages"].format(chat_id=chat.id), json=payload, headers=auth_headers_user_1)
     
     assert response.status_code == 200
     data = response.json()
@@ -161,6 +161,6 @@ async def test_send_message_unauthorized_access(
     session.commit()
 
     payload = {"content": "Message malveillant"}
-    response = await client.post(API_BASE_ROUTE["chat_messages"].format(chat_id=chat_user_1.id), json=payload, headers=auth_headers_user_2)
+    response = await client.post(API_BASE_ROUTE["chats"] + CHAT_ROUTES["chat_messages"].format(chat_id=chat_user_1.id), json=payload, headers=auth_headers_user_2)
     assert response.status_code == 403
     assert response.json()["detail"] == "You do not have access to this chat"

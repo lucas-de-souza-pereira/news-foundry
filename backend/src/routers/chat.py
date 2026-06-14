@@ -11,7 +11,7 @@ from models import Chat, User
 from routers.auth import get_current_user
 from schemas import ChatRead, ChatCreateResponse, MessageSendRequest, ChatCreateRequest, ChatShortResponse, MessageSendResponse
 from pydantic_ai import Agent, ModelMessagesTypeAdapter
-from utils.routes import API_BASE_ROUTE
+from utils.routes import API_BASE_ROUTE, CHAT_ROUTES
 
 router = APIRouter(
     prefix=API_BASE_ROUTE["chats"],
@@ -20,14 +20,14 @@ router = APIRouter(
 
 agent = chat_agent
 
-@router.post("", response_model=ChatCreateResponse, status_code=status.HTTP_201_CREATED)
+@router.post(CHAT_ROUTES["chats"], response_model=ChatCreateResponse, status_code=status.HTTP_201_CREATED)
 async def create_chat(
     payload: ChatCreateRequest,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """
-    Creates a new empty chat thread for the logged-in user.
+    Créée un nouveau fil de discussion pour l'utilisateur connecté.
     """
 
     try : 
@@ -52,13 +52,13 @@ async def create_chat(
     return new_chat
 
 
-@router.get("", response_model=List[ChatShortResponse])
+@router.get(CHAT_ROUTES["chats"], response_model=List[ChatShortResponse])
 def get_chats(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """
-    Retrieves all chats for the logged-in user.
+    Récupère tous les fils de discussion de l'utilisateur connecté.
     """
    
     chats = db.exec(
@@ -70,15 +70,15 @@ def get_chats(
     return chats
 
 
-@router.get("/{chat_id}", response_model=ChatRead)
+@router.get(CHAT_ROUTES["chat"].format(chat_id="{chat_id}"), response_model=ChatRead)
 def get_chat(
     chat_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """
-    Retrieves the complete chat history for a specific chat ID.
-    Enforces authorization: users can only read their own chats.
+    Récupère l'historique complet d'un fil de discussion spécifique.
+    Enforce que seuls les propriétaires peuvent accéder à leurs discussions.
     """
     db_chat = db.get(Chat, chat_id)
     if not db_chat:
@@ -104,7 +104,7 @@ def get_chat(
 
 
 
-@router.post("/{chat_id}/messages", response_model=MessageSendResponse)
+@router.post(CHAT_ROUTES["chat_messages"].format(chat_id="{chat_id}"), response_model=MessageSendResponse)
 async def send_message(
     chat_id: int,
     payload: MessageSendRequest,
@@ -112,8 +112,9 @@ async def send_message(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Appends a new user message to the chat history, sends it to PydanticAI (Mistral),
-    saves the updated history to the database, and returns the AI's reply.
+    Envoie le message à PydanticAI (Mistral).
+    Sauvegarde l'historique mis à jour dans la base de données.
+    Retourne la réponse de l'IA.
     """
     chat = db.get(Chat, chat_id)
     if not chat:
