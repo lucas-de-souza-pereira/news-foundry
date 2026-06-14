@@ -1,11 +1,10 @@
 import os
-from models import User
+from models import User, Chat
 from sqlmodel import SQLModel, Session, create_engine, select
 from security import hash_password
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL, echo=True)
-
 
 def init_db():
     SQLModel.metadata.create_all(engine)
@@ -27,8 +26,7 @@ def init_db():
                 )
             )
             session.commit()
-            print("Default user created successfully with correct password hash format")
-
+            print("Default user created successfully")
 
 def get_db():
     with Session(engine) as session:

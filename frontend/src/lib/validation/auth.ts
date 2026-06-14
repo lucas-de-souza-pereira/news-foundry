@@ -8,3 +8,6 @@ export type TokenResponse = {
     token_type: string;
 }
 
+
+
+export type AuthToken = string

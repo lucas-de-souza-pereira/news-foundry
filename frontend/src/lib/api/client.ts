@@ -17,21 +17,30 @@ export async function apiFetch<T>(
     ...((fetchOptions.headers as Record<string, string>) ?? {}),
   };
 
-  const res = await fetch(`${API_URL}${path}`, {
-    ...fetchOptions,
-    headers,
-  });
+  let res: Response
+
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      ...fetchOptions,
+      headers,
+    });
+  } catch (err) {
+    throw new Error("Impossible de contacter le serveur. Veuillez vérifier votre connexion ou le statut du serveur.");
+  }
 
   let data: any = null;
   try {
     data = await res.json();
   } catch {
-    throw new Error("Impossible de contacter le serveur. Veuillez vérifier votre connexion ou le statut du serveur.");
   }
 
   if (res.status === 401 && !path.includes("/auth/")) {
-    const { redirect } = await import("next/navigation");
-    redirect("/login?expired=1");
+    if (typeof window !== "undefined") {
+      const { StorageUtility, StorageKeys } = await import("@/lib/local-storage");
+      StorageUtility.removeItem(StorageKeys.SESSION_TOKEN);
+      window.location.href = "/login?expired=1";
+      return {} as T; 
+    }
   }
 
   if (!res.ok) {
