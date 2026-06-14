@@ -1,4 +1,4 @@
-import { ChatMessage } from "@/lib/actions/chat";
+import { ChatMessage } from "@/lib/validation/chat";
 
 interface MessageProps {
   message: ChatMessage;

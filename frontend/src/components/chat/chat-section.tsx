@@ -9,10 +9,6 @@ interface ChatSectionProps {
 }
 
 export default function ChatSection({ history }: ChatSectionProps) {
-  if (!history) {
-    return <div></div>;
-  }
-
   return (
     <div>
       {history.map((m, i) => (

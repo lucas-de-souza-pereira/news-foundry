@@ -19,6 +19,8 @@ import {
   ChatMessage,
   MessageSendRequest,
 } from "@/lib/validation/chat";
+import Link from "next/link";
+import { APP_ROUTES } from "@/lib/routes";
 
 export default function ChatDetailsPage({
   params,
@@ -97,6 +99,10 @@ export default function ChatDetailsPage({
 
   return (
     <div>
+      <header className="flex flex-row gap-8">
+        <Link href={APP_ROUTES.HOME}>Nouvelle Discussion</Link>
+      </header>
+
       {token ? (
         <ChatSection history={chat?.history ?? []} />
       ) : (
