@@ -8,7 +8,7 @@ AUTH_ROUTES = {
 }
 
 CHAT_ROUTES = {
-    "chats": "/",
+    "chats": "",
     "chat": "/{chat_id}",
     "chat_messages": "/{chat_id}/messages",
 }
