@@ -20,6 +20,7 @@ import { APP_ROUTES } from "@/lib/routes";
 
 // Types
 import { Chat } from "@/lib/validation/chat";
+import { ChatProvider, useChats } from "@/context/chat-context";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -46,23 +47,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
-  const { token } = useAuth();
-  const [chats, setChats] = useState<Chat[]>([]);
-
-  useEffect(() => {
-    if (!token) return;
-
-    const loadChats = async () => {
-      const res = await getAllChatAction(token);
-      if (res.success) {
-        setChats(res.data);
-      } else {
-        console.error(res.error);
-      }
-    };
-    loadChats();
-  }, [token]);
-
+  const { chats } = useChats();
   return (
     <div className="flex flex-row">
       <aside>
@@ -90,7 +75,9 @@ export default function HomeLayout({
   return (
     <AuthProvider>
       <ProtectedRoute>
-        <AuthenticatedLayout>{children}</AuthenticatedLayout>
+        <ChatProvider>
+          <AuthenticatedLayout>{children}</AuthenticatedLayout>
+        </ChatProvider>
       </ProtectedRoute>
     </AuthProvider>
   );

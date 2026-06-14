@@ -1,5 +1,8 @@
 "use client";
 
+// next
+import { useRouter } from "next/navigation";
+
 // Components
 import ChatInput from "@/components/chat/chat-input";
 
@@ -11,9 +14,13 @@ import { startChatAction } from "@/lib/actions/chat";
 
 // Types
 import { ChatCreateResquest } from "@/lib/validation/chat";
+import { APP_ROUTES } from "@/lib/routes";
+import { useChats } from "@/context/chat-context";
 
 export default function Home() {
   const { token } = useAuth();
+  const router = useRouter();
+  const { addChat } = useChats();
 
   const handleStartNewChat = async (message: string) => {
     if (!token) return;
@@ -25,7 +32,9 @@ export default function Home() {
     const res = await startChatAction(resquest, token);
 
     if (res.success) {
-      console.log("Conversation ID:", res.data.id);
+      addChat(res.data);
+      console.log("bien ajouté");
+      // router.push(APP_ROUTES.CHAT(res.data.id));
     } else {
       console.error(res.error);
     }

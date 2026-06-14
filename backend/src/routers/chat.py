@@ -5,7 +5,7 @@ from openai.types.responses import response_web_search_call_completed_event
 import json
 from typing import List, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlmodel import Session, select
+from sqlmodel import Session, select, desc
 from database import get_db
 from models import Chat, User
 from routers.auth import get_current_user
@@ -60,7 +60,13 @@ def get_chats(
     """
     Retrieves all chats for the logged-in user.
     """
-    chats = db.exec(select(Chat).where(Chat.user_id == current_user.id)).all()
+   
+    chats = db.exec(
+        select(Chat)
+        .where(Chat.user_id == current_user.id)
+        .order_by(desc(Chat.created_at))
+    ).all()
+
     return chats
 
 

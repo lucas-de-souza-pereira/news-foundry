@@ -63,7 +63,6 @@ export async function getChatAction(
         token,
       },
     );
-    console.log("data get conversation", data);
     return { success: true, data };
   } catch (err) {
     const message =
