@@ -1,6 +1,13 @@
+// API
 import { apiFetch } from "@/lib/api/client";
+
+// Utils
 import { ActionResult } from "@/lib/validation/action";
+
+// Routes
 import { API_ROUTES } from "@/lib/routes";
+
+// Types
 import {
   ChatCreateResquest,
   ChatResponse,

@@ -1,9 +1,16 @@
 "use client";
 
+// Contexts
 import { useAuth } from "./auth-context";
-import { Chat } from "@/lib/validation/chat";
+
+// React & Hooks
 import { useContext, useEffect, useState, createContext } from "react";
+
+// Actions
 import { getAllChatAction } from "@/lib/actions/chat";
+
+// Types
+import { Chat } from "@/lib/validation/chat";
 
 interface ChatContextType {
   chats: Chat[];
@@ -32,10 +39,8 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   }, [token]);
 
   const addChat = (newChat: Chat) => {
-    console.log("1. addChat appelé avec :", newChat);
     setChats((prev) => {
       const nextChats = [newChat, ...prev];
-      console.log("2. Prochain état des chats :", nextChats);
       return nextChats;
     });
   };

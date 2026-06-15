@@ -1,11 +1,21 @@
 "use client";
+// React
+import { useState } from "react";
 
+// Next
+import { useRouter } from "next/navigation";
+
+// UI Components
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+
+// Actions
 import { loginAction } from "@/lib/actions/auth";
+
+// Types
 import { LoginCredentials } from "@/lib/validation/auth";
+
+// Routes
 import { APP_ROUTES } from "@/lib/routes";
 
 export default function LoginForm() {

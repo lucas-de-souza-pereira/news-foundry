@@ -1,4 +1,6 @@
 "use client";
+// next
+import Link from "next/link";
 
 // React & Hooks
 import { use, useEffect, useState } from "react";
@@ -19,7 +21,8 @@ import {
   ChatMessage,
   MessageSendRequest,
 } from "@/lib/validation/chat";
-import Link from "next/link";
+
+// Routes
 import { APP_ROUTES } from "@/lib/routes";
 
 export default function ChatDetailsPage({
@@ -28,6 +31,7 @@ export default function ChatDetailsPage({
   params: Promise<{ id: number }>;
 }) {
   const { token } = useAuth();
+
   const resolvedParams = use(params);
   const chatId = resolvedParams.id;
 

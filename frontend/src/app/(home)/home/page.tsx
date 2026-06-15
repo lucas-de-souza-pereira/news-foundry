@@ -33,8 +33,7 @@ export default function Home() {
 
     if (res.success) {
       addChat(res.data);
-      console.log("bien ajouté");
-      // router.push(APP_ROUTES.CHAT(res.data.id));
+      router.push(APP_ROUTES.CHAT(res.data.id));
     } else {
       console.error(res.error);
     }

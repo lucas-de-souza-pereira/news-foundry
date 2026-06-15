@@ -1,6 +1,8 @@
 "use client";
-
+// React & Hooks
 import { createContext, useContext, useState, useEffect } from "react";
+
+// Utils
 import { StorageUtility, StorageKeys } from "@/lib/local-storage";
 
 interface AuthContextType {
