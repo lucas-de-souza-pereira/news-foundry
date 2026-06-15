@@ -58,7 +58,7 @@
   /* Texte de lecture */
   --color-text-body: var(--text-body);
   /* Sous-titres/ Dates */
-  --color-muted-foreground: var(--muted-foreground);
+  --color-text-muted: var(--muted-foreground);
   /* Texte d'aide/ Exemples */
   --color-text-subtle: var(--text-subtle);
 
@@ -115,7 +115,7 @@
   /* Texte de lecture */
   --text-body: #2a2a31;
   /* Sous-titres/ Dates */
-  --muted-foreground: #717182;
+  --text-muted: #717182;
   /* Texte d'aide/ Exemples */
   --text-subtle: #838392;
 }
@@ -133,5 +133,18 @@
     line-height: 100%;
     letter-spacing: 0%;
     color: var(--text-body);
+  }
+
+  .bg-grid-pattern {
+    /* La couleur de fond sombre en dessous */
+    background-color: #28282d;
+
+    /* La taille de chaque carreau de la grille (ex: 40px par 40px) */
+    background-size: 80px 80px;
+
+    /* Dessine une ligne verticale de 1px et une ligne horizontale de 1px */
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 3px, transparent 3px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 3px, transparent 3px);
   }
 }
