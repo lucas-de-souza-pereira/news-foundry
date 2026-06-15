@@ -1,0 +1,8 @@
+export { BotIcon } from "./bot-icon";
+export { CalendarIcon } from "./calandar-icon";
+export { ChatIcon } from "./chat-icon";
+export { DocumentIcon } from "./document-icon";
+export { LogOutIcon } from "./log-out-icon";
+export { Logo } from "./logo";
+export { SendIcon } from "./send-icon";
+export { UserIcon } from "./user-icon";
