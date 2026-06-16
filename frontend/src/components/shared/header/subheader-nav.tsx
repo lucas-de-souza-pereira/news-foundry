@@ -8,19 +8,22 @@ export default function SubheaderNav() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-row gap-2 w-full px-4.5 py-6 bg-sidebar">
+    <nav
+      className="flex flex-row gap-2 w-full px-4.5 py-6 bg-sidebar"
+      aria-label="Navigation principale"
+    >
       <NavPill
         path={APP_ROUTES.HOME}
-        icon={<ChatIcon className="h-4 w-4" />}
+        icon={<ChatIcon className="h-4 w-4" aria-hidden="true" />}
         label={"Chat"}
         isActive={pathname.startsWith(APP_ROUTES.HOME)}
       />
       <NavPill
         path={APP_ROUTES.PRESS_REVIEW}
-        icon={<DocumentIcon className="h-4 w-4" />}
+        icon={<DocumentIcon className="h-4 w-4" aria-hidden="true" />}
         label={"Revue de presse"}
         isActive={pathname.startsWith(APP_ROUTES.PRESS_REVIEW)}
       />
-    </div>
+    </nav>
   );
 }

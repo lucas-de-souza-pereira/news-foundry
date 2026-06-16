@@ -43,7 +43,7 @@ export default function Sidebar() {
       </div>
       <nav
         className="flex-1 flex flex-col justify-between "
-        aria-label="Navigation principale"
+        aria-label="Historique des conversations"
       >
         <ul className="overflow-y-auto" aria-label="Liste des conversations">
           {chats.map((c) => (

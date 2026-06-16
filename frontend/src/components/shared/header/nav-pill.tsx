@@ -13,6 +13,7 @@ export default function NavPill({ path, icon, label, isActive }: NavPillProps) {
   return (
     <Link
       href={path}
+      aria-current={isActive ? "page" : undefined}
       className={cn(
         "flex gap-2 items-center rounded-md px-4 py-2",
         isActive
