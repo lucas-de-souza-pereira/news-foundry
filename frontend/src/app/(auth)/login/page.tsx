@@ -7,7 +7,7 @@ export default function Login() {
       <div className="bg-card py-12.5 px-8 rounded-xl w-[448px]">
         <div className="flex flex-col items-center gap-6">
           <Logo className="w-49 h-4.25 text-primary " />
-          <p className="px-8 text-text-muted text-center">
+          <p className="px-8 text-subtle text-center">
             Connectez-vous pour accéder à votre assistant d'actualités IA
           </p>
         </div>

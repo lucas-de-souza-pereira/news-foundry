@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Components
-import ChatSelected from "@/components/chat/chat-selected";
+import ChatListItem from "@/components/shared/slidebar/chat-list-item";
 
 // Actions
 import { getAllChatAction } from "@/lib/actions/chat";
@@ -16,11 +16,15 @@ import { getAllChatAction } from "@/lib/actions/chat";
 import { AuthProvider, useAuth } from "@/context/auth-context";
 
 // Routes & Config
-import { APP_ROUTES } from "@/lib/routes";
+import { API_ROUTES, APP_ROUTES } from "@/lib/routes";
 
 // Types
 import { Chat } from "@/lib/validation/chat";
 import { ChatProvider, useChats } from "@/context/chat-context";
+import { Logo, LogOutIcon } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { StorageUtility } from "@/lib/local-storage";
+import Sidebar from "@/components/shared/slidebar/sidebar";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -47,20 +51,9 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
-  const { chats } = useChats();
   return (
     <div className="flex flex-row">
-      <aside>
-        <nav>
-          <ul>
-            {chats.map((c) => (
-              <li key={c.id}>
-                <ChatSelected chat={c} />
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
+      <Sidebar />
 
       <main>{children}</main>
     </div>

@@ -29,7 +29,7 @@ export function ErrorState({
         Oups, quelque chose s&apos;est mal passé
       </h1>
 
-      <p className="text-muted-foreground max-w-md mb-8">
+      <p className="text-subtle max-w-md mb-8">
         {message ||
           "Une erreur inattendue est survenue. Nos équipes techniques ont été prévenues."}
         {error?.digest && (

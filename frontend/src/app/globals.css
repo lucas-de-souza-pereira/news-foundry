@@ -4,6 +4,58 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  /* Arrière-plans */
+  --background: #e5e5ef;
+  --sidebar: #fbfbfc;
+  --card: #ffffff;
+
+  /* Couleurs principales */
+  --primary: #803cda;
+  --primary-foreground: #ffffff;
+
+  --secondary: #2a2a31;
+  --secondary-light: #eceef2;
+  --secondary-foreground: #fbfbfc;
+
+  --dark: #2a2a31;
+  --dark-foreground: #ffffff;
+
+  --button-inactive-bg: #f5f5f7;
+  --button-disabled-default: #e5e5ef;
+  --button-disabled-icon: #cacad5;
+
+  --muted: #e5e5ef;
+  --muted-foreground: #9999ab;
+
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* Bordures et Séparateurs */
+  --border: #eceef2;
+
+  /* Input */
+  --input: #eceef2;
+  --input-border: #803cda;
+
+  /* Avatar IA */
+  --avatar-ia-bg: #030213;
+
+  /* Effets de survol / focus */
+  --accent: #f5f4fa;
+  --dark-accent: #717182;
+  --sidebar-accent: #eceef2;
+
+  /* Gris et Textes */
+  /* Titres */
+  --foreground: #0a0a0a;
+  /* Sous-titres/ Dates / inputs */
+  --text-subtle: #717182;
+  /* Texte de lecture */
+  --text-body: #2a2a31;
+  /* Texte d'aide/ Exemples */
+  --text-subtle-light: #838392;
+}
+
 @theme inline {
   /* Polices */
 
@@ -54,13 +106,13 @@
 
   /* Textes */
   /* Titres */
-  --color-foreground: var(--foreground);
+  --color-title: var(--foreground);
   /* Texte de lecture */
-  --color-text-body: var(--text-body);
+  --color-body: var(--text-body);
   /* Sous-titres/ Dates */
-  --color-text-muted: var(--muted-foreground);
+  --color-subtle: var(--text-subtle);
   /* Texte d'aide/ Exemples */
-  --color-text-subtle: var(--text-subtle);
+  --color-subtle-light: var(--text-subtle-light);
 
   /* Formats de rayon */
   --radius-md: 8px;
@@ -68,64 +120,12 @@
   --radius-xl: 14px;
 }
 
-:root {
-  /* Arrière-plans */
-  --background: #e5e5ef;
-  --sidebar: #fbfbfc;
-  --card: #ffffff;
-
-  /* Couleurs principales */
-  --primary: #803cda;
-  --primary-foreground: #ffffff;
-
-  --secondary: #2a2a31;
-  --secondary-light: #eceef2;
-  --secondary-foreground: #fbfbfc;
-
-  --dark: #2a2a31;
-  --dark-foreground: #ffffff;
-
-  --button-inactive-bg: #f5f5f7;
-  --button-disabled-default: #e5e5ef;
-  --button-disabled-icon: #cacad5;
-
-  --muted: #e5e5ef;
-  --muted-foreground: #9999ab;
-
-  --destructive: oklch(0.577 0.245 27.325);
-
-  /* Bordures et Séparateurs */
-  --border: #eceef2;
-
-  /* Input */
-  --input: #eceef2;
-  --input-border: #803cda;
-
-  /* Avatar IA */
-  --avatar-ia-bg: #030213;
-
-  /* Effets de survol / focus */
-  --accent: #f5f4fa;
-  --dark-accent: #717182;
-  --sidebar-accent: #eceef2;
-
-  /* Gris et Textes */
-  /* Titres */
-  --foreground: #0a0a0a;
-  /* Texte de lecture */
-  --text-body: #2a2a31;
-  /* Sous-titres/ Dates */
-  --text-muted: #717182;
-  /* Texte d'aide/ Exemples */
-  --text-subtle: #838392;
-}
-
 .dark {
 }
 
 @layer base {
-  * {
-  }
+  /* * {
+  } */
 
   p {
     font-family: var(--font-sans), sans-serif;
@@ -134,17 +134,17 @@
     letter-spacing: 0%;
     color: var(--text-body);
   }
+}
 
-  .bg-grid-pattern {
-    /* La couleur de fond sombre en dessous */
-    background-color: #28282d;
+@utility bg-grid-pattern {
+  /* La couleur de fond sombre en dessous */
+  background-color: #28282d;
 
-    /* La taille de chaque carreau de la grille (ex: 40px par 40px) */
-    background-size: 80px 80px;
+  /* La taille de chaque carreau de la grille (ex: 40px par 40px) */
+  background-size: 80px 80px;
 
-    /* Dessine une ligne verticale de 1px et une ligne horizontale de 1px */
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.04) 3px, transparent 3px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 3px, transparent 3px);
-  }
+  /* Dessine une ligne verticale de 1px et une ligne horizontale de 1px */
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 3px, transparent 3px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 3px, transparent 3px);
 }
