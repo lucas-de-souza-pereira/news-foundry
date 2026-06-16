@@ -38,8 +38,8 @@ export default function Sidebar() {
       className="flex flex-col bg-sidebar min-h-screen"
       aria-label="Barre latérale"
     >
-      <div className="pl-6 pr-37.5 py-9.25 text-primary border-b border-r border-border">
-        <Logo className="w-37 h-3.5" aria-hidden="true" />
+      <div className="pl-6 pr-37.5 py-9 text-primary border-b border-r border-border">
+        <Logo className="w-37 h-3.75" aria-hidden="true" />
       </div>
       <nav
         className="flex-1 flex flex-col justify-between "

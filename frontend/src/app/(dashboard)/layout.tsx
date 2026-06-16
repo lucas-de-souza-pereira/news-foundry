@@ -55,7 +55,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
     <div className="flex flex-row">
       <Sidebar />
 
-      <main>{children}</main>
+      <main className="flex-1 flex flex-col min-w-0">{children}</main>
     </div>
   );
 }

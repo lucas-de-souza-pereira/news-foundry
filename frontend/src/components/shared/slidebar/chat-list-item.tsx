@@ -9,7 +9,6 @@ import { cn, formatShortFrenchDate } from "@/lib/utils";
 
 // Types
 import { Chat } from "@/lib/validation/chat";
-import { useParams } from "next/navigation";
 
 interface ChatProps {
   chat: Chat;

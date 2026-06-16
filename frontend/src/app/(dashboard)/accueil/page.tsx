@@ -16,6 +16,7 @@ import { startChatAction } from "@/lib/actions/chat";
 import { ChatCreateResquest } from "@/lib/validation/chat";
 import { APP_ROUTES } from "@/lib/routes";
 import { useChats } from "@/context/chat-context";
+import SubheaderNav from "@/components/shared/header/subheader-nav";
 
 export default function Home() {
   const { token } = useAuth();
@@ -40,10 +41,9 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-row">
-      <header className="flex flex-row gap-8">
-        <p>chat</p>
-        <p>revue de presse</p>
+    <div className="">
+      <header>
+        <SubheaderNav />
       </header>
       <section></section>
 
