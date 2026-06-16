@@ -9,7 +9,7 @@ export default function SubheaderNav() {
 
   return (
     <nav
-      className="flex flex-row gap-2 w-full px-4.5 py-6 bg-sidebar"
+      className="flex flex-row gap-2 w-full px-4.5 py-6.5 bg-sidebar"
       aria-label="Navigation principale"
     >
       <NavPill

@@ -17,6 +17,7 @@ import { ChatCreateResquest } from "@/lib/validation/chat";
 import { APP_ROUTES } from "@/lib/routes";
 import { useChats } from "@/context/chat-context";
 import SubheaderNav from "@/components/shared/header/subheader-nav";
+import BotIntroduction from "@/components/home/bot-introduction";
 
 export default function Home() {
   const { token } = useAuth();
@@ -41,11 +42,14 @@ export default function Home() {
   };
 
   return (
-    <div className="">
+    <div className="flex flex-col min-h-screen">
       <header>
         <SubheaderNav />
       </header>
-      <section></section>
+
+      <section className="flex-1 bg-background flex items-center justify-center">
+        <BotIntroduction />
+      </section>
 
       <ChatInput sendMessage={handleStartNewChat} />
     </div>
