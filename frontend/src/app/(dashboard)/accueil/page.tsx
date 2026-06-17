@@ -18,14 +18,21 @@ import { APP_ROUTES } from "@/lib/routes";
 import { useChats } from "@/context/chat-context";
 import SubheaderNav from "@/components/shared/header/subheader-nav";
 import BotIntroduction from "@/components/home/bot-introduction";
+import { useState } from "react";
 
 export default function Home() {
   const { token } = useAuth();
   const router = useRouter();
   const { addChat } = useChats();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const handleStartNewChat = async (message: string) => {
     if (!token) return;
+
+    setIsSubmitting(true);
+    setError(null);
 
     const resquest: ChatCreateResquest = {
       first_message: message,
@@ -35,9 +42,10 @@ export default function Home() {
 
     if (res.success) {
       addChat(res.data);
+      setIsSubmitting(false);
       router.push(APP_ROUTES.CHAT(res.data.id));
     } else {
-      console.error(res.error);
+      setError(res.error);
     }
   };
 
@@ -47,11 +55,20 @@ export default function Home() {
         <SubheaderNav />
       </header>
 
-      <section className="flex-1 bg-background flex items-center justify-center">
+      <div className="flex-1 bg-background flex items-center justify-center">
         <BotIntroduction />
-      </section>
+      </div>
 
-      <ChatInput sendMessage={handleStartNewChat} />
+      <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
+        <ChatInput
+          sendMessage={handleStartNewChat}
+          isSubmitting={isSubmitting}
+          isNewChat={true}
+        />
+        {error && (
+          <p className="text-destructive text-center text-sm">{error}</p>
+        )}
+      </div>
     </div>
   );
 }

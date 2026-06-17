@@ -17,8 +17,13 @@ export default function BotIntroduction() {
       </p>
 
       <div className="text-subtle text-sm mt-10">
-        <h3 className="font-bold ">Exemples :</h3>
-        <ul className=" list-disc list-inside  flex flex-col gap-y-2.25 mt-2.25">
+        <h3 className="font-bold " id="examples-heading">
+          Exemples :
+        </h3>
+        <ul
+          className=" list-disc list-inside  flex flex-col gap-y-2.25 mt-2.25"
+          aria-labelledby="examples-heading"
+        >
           <li>"Quelles sont les dernières nouvelles en politique ?"</li>
           <li>"Génère une revue de presse sur la technologie"</li>
           <li>"Résume l'actualité économique de la semaine"</li>

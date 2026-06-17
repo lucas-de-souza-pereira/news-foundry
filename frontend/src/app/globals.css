@@ -36,6 +36,7 @@
   /* Input */
   --input: #eceef2;
   --input-border: #803cda;
+  --textarea: #f5f5f7;
 
   /* Avatar IA */
   --avatar-ia-bg: #030213;
@@ -95,8 +96,7 @@
   /* Input */
   --color-input: var(--input);
   --color-input-border: var(--input-border);
-
-  /* Avatar IA */
+  --color-textarea: var(--textarea); /* Avatar IA */
   --color-avatar-ia-bg: var(--avatar-ia-bg);
 
   /* Effets de survol / focus */
