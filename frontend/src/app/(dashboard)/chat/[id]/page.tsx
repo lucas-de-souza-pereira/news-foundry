@@ -24,6 +24,7 @@ import {
 
 // Routes
 import { APP_ROUTES } from "@/lib/routes";
+import SubhearderChat from "@/components/shared/header/subhearder-chat";
 
 export default function ChatDetailsPage({
   params,
@@ -38,6 +39,7 @@ export default function ChatDetailsPage({
   const [chat, setChat] = useState<ChatDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!token) return;
@@ -58,6 +60,9 @@ export default function ChatDetailsPage({
 
   const handleSendMessage = async (message: string) => {
     if (!token) return;
+
+    setIsSubmitting(true);
+    setError(null);
 
     const userMessage: ChatMessage = {
       role: "user",
@@ -88,6 +93,7 @@ export default function ChatDetailsPage({
           history: [...prevChat.history, agentMessage],
         };
       });
+      setIsSubmitting(false);
     } else {
       console.error(res.error);
     }
@@ -102,9 +108,9 @@ export default function ChatDetailsPage({
   }
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <header className="flex flex-row gap-8">
-        <Link href={APP_ROUTES.HOME}>Nouvelle Discussion</Link>
+        <SubhearderChat />
       </header>
 
       {token ? (
@@ -113,7 +119,7 @@ export default function ChatDetailsPage({
         <div>Connexion en cours...</div>
       )}
 
-      <ChatInput sendMessage={handleSendMessage} />
+      <ChatInput sendMessage={handleSendMessage} isSubmitting={isSubmitting} />
     </div>
   );
 }

@@ -6,3 +6,4 @@ export { LogOutIcon } from "./log-out-icon";
 export { Logo } from "./logo";
 export { SendIcon } from "./send-icon";
 export { UserIcon } from "./user-icon";
+export { ArrowLeft } from "./arrow-left";
