@@ -108,7 +108,7 @@ export default function ChatDetailsPage({
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-screen">
       <header className="flex flex-row gap-8">
         <SubhearderChat />
       </header>
@@ -119,7 +119,12 @@ export default function ChatDetailsPage({
         <div>Connexion en cours...</div>
       )}
 
-      <ChatInput sendMessage={handleSendMessage} isSubmitting={isSubmitting} />
+      <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
+        <ChatInput
+          sendMessage={handleSendMessage}
+          isSubmitting={isSubmitting}
+        />
+      </div>
     </div>
   );
 }
