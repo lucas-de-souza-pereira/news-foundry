@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Dict, Any
 
-# Authentication Schemas
+#  auth
 class LoginRequest(BaseModel):
     email: str
     password: str
@@ -15,7 +15,7 @@ class TokenData(BaseModel):
     email: str | None = None
 
 
-# Schema to read the full history of a chat
+# chats
 class ChatRead(BaseModel):
     id: int
     user_id: int
@@ -26,12 +26,9 @@ class ChatRead(BaseModel):
         "from_attributes": True
     }
 
-# Received when starting a new chat
 class ChatCreateRequest(BaseModel):
     first_message: str
 
-
-# Returned after the chat is created successfully
 class ChatCreateResponse(BaseModel):
     id: int
     user_id: int
@@ -49,3 +46,9 @@ class MessageSendRequest(BaseModel):
 
 class MessageSendResponse(BaseModel):
     response: Dict[str,Any]
+
+
+# news
+class NewsArticleResponse(BaseModel):
+    title: str
+    summary: str

@@ -1,17 +1,37 @@
-from agent import chat_agent
-from groq.types import chat
-from utils.mapping import map_history_to_frontend
-from openai.types.responses import response_web_search_call_completed_event
+# librairie standard
+
+from datetime import date
 import json
 from typing import List, Dict, Any
+
+# librairies externes
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlmodel import Session, select, desc
-from database import get_db
-from models import Chat, User
-from routers.auth import get_current_user
-from schemas import ChatRead, ChatCreateResponse, MessageSendRequest, ChatCreateRequest, ChatShortResponse, MessageSendResponse
 from pydantic_ai import Agent, ModelMessagesTypeAdapter
+from sqlmodel import Session, select, desc
+
+
+# imports locaux
+# agent
+from agent.agent import chat_agent
+from agent.system_prompt import get_or_create_daily_prompt
+# database
+from database import get_db
+# models
+from models import Chat, User, SystemPrompt
+# routes
+from routers.auth import get_current_user
+# schemas
+from schemas import (
+    ChatRead, 
+    ChatCreateResponse, 
+    MessageSendRequest, 
+    ChatCreateRequest, 
+    ChatShortResponse, 
+    MessageSendResponse
+)
+from utils.mapping import map_history_to_frontend
 from utils.routes import API_BASE_ROUTE, CHAT_ROUTES
+
 
 router = APIRouter(
     prefix=API_BASE_ROUTE["chats"],
@@ -29,9 +49,18 @@ async def create_chat(
     """
     Créée un nouveau fil de discussion pour l'utilisateur connecté.
     """
+    try:
+        daily_prompt = await get_or_create_daily_prompt(db, date.today())
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error generating daily system prompt: {str(e)}"
+        )
 
     try : 
-        result = await agent.run(payload.first_message, message_history=[])
+        result = await agent.run(payload.first_message,
+        message_history=[],
+        deps=daily_prompt.system_prompt)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -42,7 +71,8 @@ async def create_chat(
 
     new_chat = Chat(
         user_id = current_user.id,
-        history= new_messages
+        history= new_messages,
+        system_prompt_id=daily_prompt.id
     )
 
     db.add(new_chat)
@@ -129,13 +159,21 @@ async def send_message(
             detail="You do not have access to this chat"
         )
     
+    system_prompt_content = ""
+    if chat.system_prompt_id:
+        linked_prompt = db.get(SystemPrompt, chat.system_prompt_id)
+        if linked_prompt:
+            system_prompt_content = linked_prompt.system_prompt
+
+
+
     try:
         message_history = ModelMessagesTypeAdapter.validate_python(chat.history)
     except Exception:
         message_history = []
     
     try:
-        result = await agent.run(payload.content, message_history=message_history)
+        result = await agent.run(payload.content, message_history=message_history,deps=system_prompt_content)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

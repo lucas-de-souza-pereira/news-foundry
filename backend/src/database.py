@@ -1,5 +1,5 @@
 import os
-from models import User, Chat
+from models import User, Chat, SystemPrompt
 from sqlmodel import SQLModel, Session, create_engine, select
 from security import hash_password
 
@@ -9,6 +9,7 @@ engine = create_engine(DATABASE_URL, echo=True)
 def init_db():
     SQLModel.metadata.create_all(engine)
     print("Database initialized successfully")
+
 
     # Creating a default user
     default_email = "test@test.com"
