@@ -1,4 +1,8 @@
+from services.world_news import get_searched_news
 from pydantic_ai import Agent, RunContext
+from typing import List
+from schemas import NewsArticleResponse
+
 
 resume_agent = Agent(
     'mistral:mistral-small-latest',
@@ -16,3 +20,10 @@ chat_agent = Agent(
 @chat_agent.system_prompt
 def get_chat_system_prompt(ctx: RunContext[str]) -> str:
      return ctx.deps 
+
+
+
+@chat_agent.tool_plain 
+async def search_news(query: str) -> List[NewsArticleResponse]:
+    articles = await get_searched_news(query=query)
+    return articles   
