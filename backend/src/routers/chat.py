@@ -2,7 +2,6 @@
 
 from datetime import timezone
 from datetime import datetime
-from schemas import ArticleSynthesis
 from agent.prompts import PRESS_REVIEW_AGENT_SYSTEM_PROMPT
 from datetime import date
 import json
@@ -273,33 +272,29 @@ async def generate_press_review(
     return press_review
 
 
-@router.get(CHAT_ROUTES["press_review"].format(chat_id="{chat_id}")
-, response_model=PressReviewResponse)
+@router.get(CHAT_ROUTES["all_press_reviews"]
+, response_model=List[PressReviewResponse])
 def get_press_review(
-    chat_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """
-    Récupère la revue de presse associée à un fil de discussion spécifique.
+    Récupère toutes les revue de presse .
     """
-    chat = db.get(Chat, chat_id)
-    if not chat:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Chat not found"
-        )
+    chats = db.exec(
+        select(Chat)
+        .where(Chat.user_id == current_user.id)
+        .where(Chat.press_review != None)
+        .order_by(desc(Chat.created_at))
+    ).all()
+
+    print("\n\nchats\n\n", chats )
+
+    print("\n\n")
     
-    if chat.user_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You do not have access to this chat"
-        )
+    all_reviews = [chat.press_review for chat in chats]
         
-    if not chat.press_review:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Press review has not been generated for this chat yet"
-        )
-        
-    return chat.press_review
+    print("\n\nall_reviews\n\n", all_reviews )
+    print("\n\n")
+
+    return all_reviews

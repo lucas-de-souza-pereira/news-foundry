@@ -12,5 +12,5 @@ CHAT_ROUTES = {
     "chat": "/{chat_id}",
     "chat_messages": "/{chat_id}/messages",
     "generate_press_review": "/{chat_id}/generate-press-review",
-    "press_review": "/{chat_id}/press-review"
+    "all_press_reviews": "/press-reviews"
 }

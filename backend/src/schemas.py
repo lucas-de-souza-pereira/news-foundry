@@ -66,7 +66,6 @@ class ArticleSynthesis(BaseModel):
     summary: str 
 
 
-
 class PressReviewResponse(BaseModel):
     title: str
     subject: str
