@@ -1,3 +1,4 @@
+from agent.prompts import CHAT_AGENT_DEPS_PROMPT
 from datetime import date
 from typing import Optional
 
@@ -30,17 +31,15 @@ async def create_daily_prompt(db: Session, target_date: date) -> SystemPrompt:
     synthesis_result = await resume_agent.run(formatted_raw_news)
     synthesized_text = synthesis_result.output 
     
-    final_prompt_content = (
-        "Ton rôle est de répondre aux questions de l'utilisateur sur l'actualité de manière synthétique.\n"
-        f"Voici la synthèse des actualités majeures d'aujourd'hui (Date: {target_date.isoformat()}) :\n\n"
-        f"{synthesized_text}\n\n"
-    )
-    
     new_prompt = SystemPrompt(
         target_date=target_date,
-        system_prompt=final_prompt_content,
+        system_prompt=CHAT_AGENT_DEPS_PROMPT.format(
+            target_date=target_date.isoformat(),
+            synthesized_text=synthesized_text
+            ),
         articles_json=raw_news
     )
+    
     db.add(new_prompt)
     db.commit()
     db.refresh(new_prompt)
@@ -58,36 +57,3 @@ async def get_or_create_daily_prompt(db: Session, target_date: date) -> SystemPr
         prompt = await create_daily_prompt(db, target_date)
         
     return prompt
-
-
-async def update_tools_prompt(db: Session, target_date: date) -> SystemPrompt:
-    """
-    Récupère les articles via l'API, les synthétise via LLM, et les sauvegarde en base de données.
-    """
-    raw_news = await get_top_news()
-    
-    formatted_raw_news = ""
-    for news in raw_news:
-        formatted_raw_news += f"Title: {news['title']}\nSummary: {news['summary']}\n\n"
-        
-    synthesis_result = await resume_agent.run(formatted_raw_news)
-    synthesized_text = synthesis_result.output 
-    
-    final_prompt_content = (
-        "Ton rôle est de répondre aux questions de l'utilisateur sur l'actualité de manière synthétique.\n"
-        f"Voici la synthèse des actualités majeures d'aujourd'hui (Date: {target_date.isoformat()}) :\n\n"
-        f"{synthesized_text}\n\n"
-        "Si l'utilisateur pose une question sur un sujet non listé ou souhaite approfondir, "
-        "utilise ton outil de recherche de news pour charger d'autres articles."
-    )
-    
-    new_prompt = SystemPrompt(
-        target_date=target_date,
-        system_prompt=final_prompt_content,
-        articles_json=raw_news
-    )
-    db.add(new_prompt)
-    db.commit()
-    db.refresh(new_prompt)
-    
-    return new_prompt

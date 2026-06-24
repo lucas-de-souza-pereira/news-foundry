@@ -1,3 +1,5 @@
+from agent.prompts import RESUME_AGENT_SYSTEM_PROMPT, CHAT_AGENT_BASE_PROMPT
+from schemas import PressReviewResponse
 from services.world_news import get_searched_news
 from pydantic_ai import Agent, RunContext
 from typing import List
@@ -6,15 +8,13 @@ from schemas import NewsArticleResponse
 
 resume_agent = Agent(
     'mistral:mistral-small-latest',
-    system_prompt="You are a news editor. Synthesize the provided list of daily news articles. "
-        "Remove redundancies, group them by main topics, and write a concise, clean summary in French. "
-        "Do not include meta-commentary, just the structured news summary."
+    system_prompt=RESUME_AGENT_SYSTEM_PROMPT
 )
 
 chat_agent = Agent(
     'mistral:mistral-small-latest',
     deps_type=str,
-    system_prompt="Tu es l'assistant de l'application web NewsFoundry."
+    system_prompt=CHAT_AGENT_BASE_PROMPT
 )
 
 @chat_agent.system_prompt
@@ -27,3 +27,16 @@ def get_chat_system_prompt(ctx: RunContext[str]) -> str:
 async def search_news(query: str) -> List[NewsArticleResponse]:
     articles = await get_searched_news(query=query)
     return articles   
+
+
+
+press_review_agent = Agent(
+    'mistral:mistral-small-latest',
+    output_type=PressReviewResponse,
+    deps_type=str,
+)
+
+
+@press_review_agent.system_prompt
+def get_press_review_system_prompt(ctx: RunContext[str]) -> str:
+     return ctx.deps 

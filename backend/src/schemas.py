@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 #  auth
 class LoginRequest(BaseModel):
@@ -52,3 +52,24 @@ class MessageSendResponse(BaseModel):
 class NewsArticleResponse(BaseModel):
     title: str
     summary: str
+
+
+
+# press review
+
+class PressReviewCreateRequest(BaseModel):
+    subject: str
+
+
+class ArticleSynthesis(BaseModel):
+    title: str
+    summary: str 
+
+
+
+class PressReviewResponse(BaseModel):
+    title: str
+    subject: str
+    general_summary: str
+    articles: List[ArticleSynthesis]
+    created_at: Optional[datetime] = None
