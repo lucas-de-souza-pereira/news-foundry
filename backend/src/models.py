@@ -13,7 +13,7 @@ class Chat(SQLModel, table=True):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     history: List[Dict[str, Any]] = Field(default_factory=list, sa_column=Column(JSON))
     system_prompt_id: Optional[int] = Field(default=None, foreign_key="systemprompt.id")
-    press_review: Optional[Dict[str,Any]] = Field(default=None, sa_column=(JSON))
+    press_review: Optional[Dict[str,Any]] = Field(default=None, sa_column=Column(JSON))
     
 
 class SystemPrompt(SQLModel, table = True):

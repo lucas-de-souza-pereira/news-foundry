@@ -5,6 +5,7 @@ import Link from "next/link";
 // Routes
 import { APP_ROUTES } from "@/lib/routes";
 import { ArrowLeft } from "@/components/icons";
+import PressReviewModal from "@/components/press-review/modals/press-review-modal";
 
 export default function SubhearderChat() {
   return (
@@ -23,7 +24,7 @@ export default function SubhearderChat() {
           <p className="text-sm text-muted-foreground">Conversation active</p>
         </div>
       </div>
-      <button>BOUTON PRESS REVIEW</button>
+      <PressReviewModal />
     </div>
   );
 }

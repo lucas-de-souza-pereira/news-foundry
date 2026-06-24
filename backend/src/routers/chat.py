@@ -226,6 +226,7 @@ async def generate_press_review(
     Returns:
         PressReviewResponse: Revue de presse générée.
     """
+    print("TEST")
     chat = db.get(Chat, chat_id)
     if not chat:
         raise HTTPException(
@@ -264,7 +265,7 @@ async def generate_press_review(
     press_review = result.output
     press_review.created_at = datetime.now(timezone.utc)
     
-    chat.press_review = press_review.model_dump()
+    chat.press_review = press_review.model_dump(mode='json')
     db.add(chat)
     db.commit()
     db.refresh(chat)

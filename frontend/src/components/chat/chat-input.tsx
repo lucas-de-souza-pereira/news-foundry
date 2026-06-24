@@ -12,12 +12,14 @@ interface ChatInputProps {
   sendMessage: (message: string) => void;
   isSubmitting: boolean;
   isNewChat?: boolean;
+  disabled?: boolean;
 }
 
 export default function ChatInput({
   sendMessage,
   isSubmitting,
   isNewChat,
+  disabled = false,
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -68,11 +70,12 @@ export default function ChatInput({
         onKeyDown={handleKeyDown}
         maxLength={500}
         aria-label="Saisir votre message"
+        disabled={disabled}
       />
       <Button
         className="text-primary-foreground bg-primary rounded-md w-12 h-10
         disabled:text-button-inactive-bg disabled:bg-button-disabled-icon  hover:bg-dark focus:bg-dark"
-        disabled={isSubmitting || (!isFocused && !input)}
+        disabled={disabled || isSubmitting || (!isFocused && !input)}
       >
         <SendIcon className="w-4 h-4" />
         <span className="sr-only">

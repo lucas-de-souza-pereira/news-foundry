@@ -108,11 +108,7 @@ export default function ChatDetailsPage({
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      <header className="flex flex-row gap-8">
-        <SubhearderChat />
-      </header>
-
+    <div className="flex flex-col h-full">
       {token ? (
         <ChatSection history={chat?.history ?? []} />
       ) : (

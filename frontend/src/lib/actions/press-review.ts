@@ -12,11 +12,12 @@ export async function generatePressReviewAction(
   token: AuthToken,
 ): Promise<ActionResult<PressReviewResponse>> {
   try {
+    const { subject } = request;
     const data = await apiFetch<PressReviewResponse>(
       API_ROUTES.PRESS_REVIEW.GENERATE(request.chat_id),
       {
         method: "POST",
-        body: JSON.stringify(request.subject),
+        body: JSON.stringify({ subject }),
         token,
       },
     );
@@ -48,7 +49,7 @@ export async function getAllPressReview(
     const message =
       err instanceof Error
         ? err.message
-        : "Erreur lors de la récupération des conversations";
+        : "Erreur lors de la récupération des revues de presse";
     return { success: false, error: message };
   }
 }

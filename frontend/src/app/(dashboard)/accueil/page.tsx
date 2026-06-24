@@ -34,11 +34,11 @@ export default function Home() {
     setIsSubmitting(true);
     setError(null);
 
-    const resquest: ChatCreateResquest = {
+    const request: ChatCreateResquest = {
       first_message: message,
     };
 
-    const res = await startChatAction(resquest, token);
+    const res = await startChatAction(request, token);
 
     if (res.success) {
       addChat(res.data);
@@ -50,11 +50,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header>
-        <SubheaderNav />
-      </header>
-
+    <div className="flex flex-col h-full">
       <div className="flex-1 bg-background flex items-center justify-center">
         <BotIntroduction />
       </div>

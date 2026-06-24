@@ -26,7 +26,7 @@ async def create_daily_prompt(db: Session, target_date: date) -> SystemPrompt:
     
     formatted_raw_news = ""
     for news in raw_news:
-        formatted_raw_news += f"Title: {news['title']}\nSummary: {news['summary']}\n\n"
+        formatted_raw_news += f"Title: {news.title}\nSummary: {news.summary}\n\n"
         
     synthesis_result = await resume_agent.run(formatted_raw_news)
     synthesized_text = synthesis_result.output 
@@ -37,7 +37,7 @@ async def create_daily_prompt(db: Session, target_date: date) -> SystemPrompt:
             target_date=target_date.isoformat(),
             synthesized_text=synthesized_text
             ),
-        articles_json=raw_news
+        articles_json=[news.model_dump() for news in raw_news]
     )
     
     db.add(new_prompt)

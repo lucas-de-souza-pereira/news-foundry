@@ -40,12 +40,16 @@ async def get_top_news(country: str = "fr", language: str = "fr") -> List[NewsAr
         
         for cluster in data.get("top_news", []):
             for article in cluster.get("news", []):
-                simplified_articles.append(
-                    NewsArticleResponse(
-                        title=article.get("title"),
-                        summary=article.get("summary")
+                title = article.get("title")
+                summary = article.get("summary")
+                if title or summary:
+                    simplified_articles.append(
+                        NewsArticleResponse(
+                            title=title or "",
+                            summary=summary or ""
+                        )
                     )
-                )
+
 
         return simplified_articles
 
@@ -78,13 +82,15 @@ async def get_searched_news(query: str, country: str = "fr", language: str = "fr
             return []
 
         simplified_articles = []
-        
-        for cluster in data.get("search_news", []):
-            for article in cluster.get("news", []):
+
+        for article in data.get("news", []):
+            title = article.get("title")
+            summary = article.get("summary")
+            if title or summary:
                 simplified_articles.append(
                     NewsArticleResponse(
-                        title=article.get("title"),
-                        summary=article.get("summary")
+                        title=title or "",
+                        summary=summary or ""
                     )
                 )
 
