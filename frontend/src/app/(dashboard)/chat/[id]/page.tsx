@@ -22,10 +22,6 @@ import {
   MessageSendRequest,
 } from "@/lib/validation/chat";
 
-// Routes
-import { APP_ROUTES } from "@/lib/routes";
-import SubhearderChat from "@/components/shared/header/subhearder-chat";
-
 export default function ChatDetailsPage({
   params,
 }: {
