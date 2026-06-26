@@ -1,3 +1,5 @@
+"use client";
+
 import {
   formatHourMinutes,
   formatLongFrenchDate,
@@ -6,12 +8,24 @@ import {
 import { PressReview } from "@/lib/validation/press-review";
 import { CalendarIcon } from "../icons";
 import { Button } from "../ui/button";
+import { toast, Toaster } from "sonner";
 
 interface PressReviewCardProps {
   review: PressReview;
 }
 
 export default function PressReviewCard({ review }: PressReviewCardProps) {
+  const handleCopy = async () => {
+    const copyText = `${review.title}\n\n${review.general_summary}\n\n${review.articles
+      .map((art) => `${art.title} : ${art.summary}`)
+      .join("\n\n")}`;
+    await navigator.clipboard.writeText(copyText);
+    toast.success("Revue de presse copiée", {
+      position: "top-center",
+      duration: 2000,
+    });
+  };
+
   return (
     <article className=" p-10 rounded-xl bg-card border-t border-black/10">
       <header className="flex justify-between items-center">
@@ -30,7 +44,9 @@ export default function PressReviewCard({ review }: PressReviewCardProps) {
               formatHourMinutes(review.created_at)}
           </time>
         </div>
-        <Button>Copier</Button>
+        <Button onClick={handleCopy} className="px-3 py-6 rounded-sm">
+          Copier
+        </Button>
       </header>
       <div className="mt-4 flex flex-col gap-2.5 text-sm text-body">
         <h3>{review.title}</h3>
@@ -39,11 +55,13 @@ export default function PressReviewCard({ review }: PressReviewCardProps) {
         <ul className="list-disc pl-5 space-y-2">
           {review.articles.map((art, index) => (
             <li key={index}>
-              <h3 className="inline font-bold">{art.title}</h3> : {art.summary}
+              <h3 className="inline font-semibold">{art.title}</h3> :{" "}
+              {art.summary}
             </li>
           ))}
         </ul>
       </div>
+      <Toaster />
     </article>
   );
 }

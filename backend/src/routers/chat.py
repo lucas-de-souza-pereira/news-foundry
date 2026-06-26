@@ -46,6 +46,35 @@ router = APIRouter(
 chat_agent = ca
 press_review_agent = pra
 
+
+@router.get(CHAT_ROUTES["all_press_reviews"]
+, response_model=List[PressReviewResponse])
+def get_press_review(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Récupère toutes les revue de presse .
+    """
+    chats = db.exec(
+        select(Chat)
+        .where(Chat.user_id == current_user.id)
+        .where(Chat.press_review != None)
+        .order_by(desc(Chat.created_at))
+    ).all()
+
+    print("\n\nchats\n\n", chats )
+
+    print("\n\n")
+    
+    all_reviews = [chat.press_review for chat in chats]
+        
+    print("\n\nall_reviews\n\n", all_reviews )
+    print("\n\n")
+
+    return all_reviews
+
+
 @router.post(CHAT_ROUTES["chats"], response_model=ChatCreateResponse, status_code=status.HTTP_201_CREATED)
 async def create_chat(
     payload: ChatCreateRequest,
@@ -273,29 +302,3 @@ async def generate_press_review(
     return press_review
 
 
-@router.get(CHAT_ROUTES["all_press_reviews"]
-, response_model=List[PressReviewResponse])
-def get_press_review(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
-):
-    """
-    Récupère toutes les revue de presse .
-    """
-    chats = db.exec(
-        select(Chat)
-        .where(Chat.user_id == current_user.id)
-        .where(Chat.press_review != None)
-        .order_by(desc(Chat.created_at))
-    ).all()
-
-    print("\n\nchats\n\n", chats )
-
-    print("\n\n")
-    
-    all_reviews = [chat.press_review for chat in chats]
-        
-    print("\n\nall_reviews\n\n", all_reviews )
-    print("\n\n")
-
-    return all_reviews

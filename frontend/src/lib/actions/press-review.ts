@@ -32,7 +32,7 @@ export async function generatePressReviewAction(
   }
 }
 
-export async function getAllPressReview(
+export async function getAllPressReviewAction(
   token: AuthToken,
 ): Promise<ActionResult<PressReviewResponse[]>> {
   try {

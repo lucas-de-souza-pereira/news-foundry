@@ -9,7 +9,11 @@ import { PressReviewRequest } from "@/lib/validation/press-review";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
-export default function PressReviewForm() {
+interface PressReviewFormProps {
+  onSuccess?: () => void;
+}
+
+export default function PressReviewForm({ onSuccess }: PressReviewFormProps) {
   const params = useParams<{ chat: string; id: string }>();
   const chat_id = parseInt(params.id);
   const { token } = useAuth();
@@ -19,9 +23,14 @@ export default function PressReviewForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handleSumbit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!token) return;
+
+    if (!subject.trim()) {
+      setError("Veuillez choisir un thème");
+      return;
+    }
 
     const request: PressReviewRequest = {
       chat_id,
@@ -30,41 +39,50 @@ export default function PressReviewForm() {
 
     setIsSubmitting(true);
     setSuccess(null);
-
-    if (!request) {
-      setError("Veuillez choisir un thème");
-      setIsSubmitting(false);
-    }
+    setError(null);
 
     const res = await generatePressReviewAction(request, token);
     if (res.success) {
-      setSuccess("Génération de la revue réussi");
+      setSuccess("Génération de la revue réussie");
       setError(null);
 
-      //   router.push(APP_ROUTES.HOME);
-    }
-
-    if (!res.success) {
+      if (onSuccess) {
+        onSuccess();
+      }
+    } else {
       setError(res.error);
       setSuccess(null);
     }
+
     setIsSubmitting(false);
   };
 
   return (
-    <form onSubmit={handleSumbit}>
-      <label htmlFor="subject">Thème de la revue de presse</label>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-start w-full px-11 gap-y-4"
+    >
+      <label htmlFor="subject" className="text-base leading-none">
+        Thème de la revue de presse
+      </label>
       <Input
         id="subject"
         aria-label="Thème"
+        value={subject}
         onChange={(e) => setSubject(e.target.value)}
       />
 
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      {success && <p className="text-green-500 text-sm mt-2">{success}</p>}
+
       <Button
         type="submit"
-        aria-label="Généner la revue"
+        aria-label="Générer la revue"
         disabled={isSubmitting}
-        className={cn("mt-6", error || success ? "mb-3" : "mb-6")}
+        className={cn(
+          "w-full leading-none",
+          error || success ? "mb-0" : "mb-3",
+        )}
       >
         {isSubmitting ? "Envoi en cours..." : "Générer"}
       </Button>
