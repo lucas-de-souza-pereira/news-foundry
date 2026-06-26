@@ -1,19 +1,36 @@
 "use client";
 
+// React
+import { useState } from "react";
+
+// Next
+import { useParams, useRouter } from "next/navigation";
+
+// UI Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+// Contexts
 import { useAuth } from "@/context/auth-context";
+
+// Server Actions
 import { generatePressReviewAction } from "@/lib/actions/press-review";
+
+// Routes
+import { APP_ROUTES } from "@/lib/routes";
+
+// Utilities
 import { cn } from "@/lib/utils";
+
+// Types
 import { PressReviewRequest } from "@/lib/validation/press-review";
-import { useParams } from "next/navigation";
-import { useState } from "react";
 
 interface PressReviewFormProps {
   onSuccess?: () => void;
 }
 
 export default function PressReviewForm({ onSuccess }: PressReviewFormProps) {
+  const router = useRouter();
   const params = useParams<{ chat: string; id: string }>();
   const chat_id = parseInt(params.id);
   const { token } = useAuth();
@@ -21,9 +38,8 @@ export default function PressReviewForm({ onSuccess }: PressReviewFormProps) {
   const [subject, setSubject] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!token) return;
 
@@ -38,23 +54,18 @@ export default function PressReviewForm({ onSuccess }: PressReviewFormProps) {
     };
 
     setIsSubmitting(true);
-    setSuccess(null);
     setError(null);
 
     const res = await generatePressReviewAction(request, token);
     if (res.success) {
-      setSuccess("Génération de la revue réussie");
-      setError(null);
-
       if (onSuccess) {
         onSuccess();
       }
+      router.push(APP_ROUTES.PRESS_REVIEW);
     } else {
       setError(res.error);
-      setSuccess(null);
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   };
 
   return (
@@ -62,27 +73,27 @@ export default function PressReviewForm({ onSuccess }: PressReviewFormProps) {
       onSubmit={handleSubmit}
       className="flex flex-col items-start w-full px-11 gap-y-4"
     >
-      <label htmlFor="subject" className="text-base leading-none">
+      <label htmlFor="theme-input" className="text-base leading-none">
         Thème de la revue de presse
       </label>
       <Input
-        id="subject"
-        aria-label="Thème"
+        id="theme-input"
         value={subject}
         onChange={(e) => setSubject(e.target.value)}
       />
 
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-      {success && <p className="text-green-500 text-sm mt-2">{success}</p>}
+      <div aria-live="polite" className="w-full">
+        {error && (
+          <p className="text-red-500 text-sm mt-2" role="alert">
+            {error}
+          </p>
+        )}
+      </div>
 
       <Button
         type="submit"
-        aria-label="Générer la revue"
         disabled={isSubmitting}
-        className={cn(
-          "w-full leading-none",
-          error || success ? "mb-0" : "mb-3",
-        )}
+        className={cn("w-full leading-none", error ? "mb-0" : "mb-3")}
       >
         {isSubmitting ? "Envoi en cours..." : "Générer"}
       </Button>
