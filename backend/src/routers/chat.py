@@ -11,7 +11,7 @@ from typing import List, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic_ai import Agent, ModelMessagesTypeAdapter
 from sqlmodel import Session, select, desc
-
+from sqlalchemy import JSON
 
 # imports locaux
 # agent
@@ -46,6 +46,7 @@ router = APIRouter(
 chat_agent = ca
 press_review_agent = pra
 
+from sqlalchemy import cast, Text
 
 @router.get(CHAT_ROUTES["all_press_reviews"]
 , response_model=List[PressReviewResponse])
@@ -60,17 +61,11 @@ def get_press_review(
         select(Chat)
         .where(Chat.user_id == current_user.id)
         .where(Chat.press_review != None)
+        .where(cast(Chat.press_review, Text) != 'null')
         .order_by(desc(Chat.created_at))
     ).all()
-
-    print("\n\nchats\n\n", chats )
-
-    print("\n\n")
     
-    all_reviews = [chat.press_review for chat in chats]
-        
-    print("\n\nall_reviews\n\n", all_reviews )
-    print("\n\n")
+    all_reviews = [chat.press_review for chat in chats if chat.press_review is not None]
 
     return all_reviews
 

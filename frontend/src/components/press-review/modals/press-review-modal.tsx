@@ -46,7 +46,6 @@ export default function PressReviewModal() {
               size="sm"
             >
               Fermer
-              <span className="sr-only">Fermer</span>
             </Button>
           </DialogClose>
         </div>

@@ -16,9 +16,9 @@ import { startChatAction } from "@/lib/actions/chat";
 import { ChatCreateResquest } from "@/lib/validation/chat";
 import { APP_ROUTES } from "@/lib/routes";
 import { useChats } from "@/context/chat-context";
-import SubheaderNav from "@/components/shared/header/subheader-nav";
 import BotIntroduction from "@/components/home/bot-introduction";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function Home() {
   const { token } = useAuth();
@@ -52,7 +52,20 @@ export default function Home() {
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 bg-background flex items-center justify-center">
-        <BotIntroduction />
+        {isSubmitting ? (
+          <div
+            role="status"
+            aria-live="polite"
+            className="flex flex-col items-center gap-y-4"
+          >
+            <Loader2 className="size-16 animate-spin text-primary" />
+            <p className="text-subtle text-sm animate-pulse">
+              Recherche et analyse des actualités en cours...
+            </p>
+          </div>
+        ) : (
+          <BotIntroduction />
+        )}
       </div>
 
       <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">

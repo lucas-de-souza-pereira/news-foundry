@@ -35,17 +35,20 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="flex flex-col bg-sidebar min-h-screen"
+      className="flex flex-col bg-sidebar h-screen"
       aria-label="Barre latérale"
     >
-      <div className="pl-6 pr-37.5 py-9 text-primary border-b border-r border-border">
+      <div className="h-22 pl-6 pr-37.5 py-9 text-primary border-b border-r border-border">
         <Logo className="w-37 h-3.75" aria-hidden="true" />
       </div>
       <nav
-        className="flex-1 flex flex-col justify-between "
+        className="flex-1 flex flex-col min-h-0"
         aria-label="Historique des conversations"
       >
-        <ul className="overflow-y-auto" aria-label="Liste des conversations">
+        <ul
+          className="flex-1 overflow-y-auto scrollbar-thin-hover"
+          aria-label="Liste des conversations"
+        >
           {chats.map((c) => (
             <li key={c.id}>
               <ChatListItem chat={c} isActive={c.id === activeChatId} />

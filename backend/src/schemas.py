@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 
@@ -67,7 +67,10 @@ class ArticleSynthesis(BaseModel):
 
 
 class PressReviewResponse(BaseModel):
-    title: str
+    title: str = Field(
+        ..., 
+        description="The title must strictly follow the format: 'REVUE DE PRESSE [SUBJECT IN UPPERCASE] - [Day Month_in_French Year]' e.g., 'REVUE DE PRESSE FOOTBALL - 30 Septembre 2025'"
+    )
     subject: str
     general_summary: str
     articles: List[ArticleSynthesis]
