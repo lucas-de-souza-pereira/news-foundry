@@ -32,11 +32,5 @@ async def search_news(query: str) -> List[NewsArticleResponse]:
 
 press_review_agent = Agent(
     'mistral:mistral-small-latest',
-    output_type=PressReviewResponse,
-    deps_type=str,
+    output_type=PressReviewResponse
 )
-
-
-@press_review_agent.system_prompt
-def get_press_review_system_prompt(ctx: RunContext[str]) -> str:
-     return ctx.deps 

@@ -30,7 +30,7 @@ export default function PressReviewPage() {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="flex-1 bg-background flex flex-col gap-y-2.5 px-22.5 pt-10 overflow-y-auto">
+      <div className="flex-1 bg-background flex flex-col gap-y-2.5 px-22.5 pt-10 overflow-y-auto  pb-2.5">
         <div>
           <h1 className="text-title font-medium text-2xl tracking-[0.07px] leading-9">
             Revues de Presse

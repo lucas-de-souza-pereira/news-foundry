@@ -62,10 +62,11 @@ def get_press_review(
         .where(Chat.user_id == current_user.id)
         .where(Chat.press_review != None)
         .where(cast(Chat.press_review, Text) != 'null')
-        .order_by(desc(Chat.created_at))
     ).all()
     
     all_reviews = [chat.press_review for chat in chats if chat.press_review is not None]
+
+    all_reviews.sort(key=lambda r: r.get("created_at") or "", reverse=True)
 
     return all_reviews
 
@@ -263,23 +264,43 @@ async def generate_press_review(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have access to this chat"
         )
-
-    try:
-        message_history = ModelMessagesTypeAdapter.validate_python(chat.history)
-    except Exception:
-        message_history = []    
+    epured_history_json = []
+    for msg in chat.history:
+        if "parts" in msg:
+            new_parts = [
+                part for part in msg["parts"]
+                if part.get("part_kind") != "system-prompt"
+            ]
+            if new_parts:
+                new_msg = dict(msg)
+                new_msg["parts"] = new_parts
+                epured_history_json.append(new_msg)
+        else:
+            epured_history_json.append(msg)
 
     compiled_system_prompt = PRESS_REVIEW_AGENT_SYSTEM_PROMPT.format(
         subject=payload.subject,
         target_date=chat.created_at.date().isoformat()
     )
 
+    if epured_history_json and epured_history_json[0].get("kind") == "request":
+        system_part = {
+            "content": compiled_system_prompt,
+            "part_kind": "system-prompt"
+        }
+        epured_history_json[0]["parts"].insert(0, system_part)
+
+    try:
+        message_history = ModelMessagesTypeAdapter.validate_python(epured_history_json)
+    except Exception:
+        message_history = []    
+
     try: 
         result = await press_review_agent.run(
-            user_prompt=f"Génère la revue de presse sur le sujet : {payload.subject}",
-            message_history=message_history,
-            deps=compiled_system_prompt
+            user_prompt=f"Generate the press review on the subject : {payload.subject}",
+            message_history=message_history
         )
+
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -287,6 +308,7 @@ async def generate_press_review(
         )
 
     press_review = result.output
+
     press_review.created_at = datetime.now(timezone.utc)
     
     chat.press_review = press_review.model_dump(mode='json')
