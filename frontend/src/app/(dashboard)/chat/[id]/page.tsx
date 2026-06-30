@@ -37,20 +37,20 @@ export default function ChatDetailsPage({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
+  const loadChat = async () => {
     if (!token) return;
+    setLoading(true);
+    setError(null);
+    const res = await getChatAction({ chat_id: chatId }, token);
+    if (res.success) {
+      setChat(res.data);
+    } else {
+      setError(res.error);
+    }
+    setLoading(false);
+  };
 
-    const loadChat = async () => {
-      setLoading(true);
-      const res = await getChatAction({ chat_id: chatId }, token);
-      if (res.success) {
-        setChat(res.data);
-      } else {
-        setError(res.error);
-      }
-      setLoading(false);
-    };
-
+  useEffect(() => {
     loadChat();
   }, [token, chatId]);
 
@@ -95,26 +95,28 @@ export default function ChatDetailsPage({
     }
   };
 
-  if (loading) {
-    return <div>Chargement...</div>;
-  }
-
-  if (error) {
-    return <div className="p-4 text-red-500">Erreur: {error}</div>;
-  }
-
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex-1 flex flex-col min-h-0">
       {token ? (
-        <ChatSection history={chat?.history ?? []} />
+        <ChatSection
+          history={chat?.history ?? []}
+          isLoading={loading}
+          isSubmitting={isSubmitting}
+          error={error}
+          onRetry={loadChat}
+        />
       ) : (
-        <div>Connexion en cours...</div>
+        <div className="flex-1 flex justify-center items-center">
+          <p className="text-subtle text-sm animate-pulse">
+            Connexion en cours...
+          </p>
+        </div>
       )}
 
       <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
         <ChatInput
           sendMessage={handleSendMessage}
-          isSubmitting={isSubmitting}
+          isSubmitting={isSubmitting || loading}
         />
       </div>
     </div>

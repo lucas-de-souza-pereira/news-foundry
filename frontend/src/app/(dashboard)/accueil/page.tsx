@@ -50,7 +50,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex-1 flex flex-col min-h-0">
       <div className="flex-1 bg-background flex items-center justify-center">
         {isSubmitting ? (
           <div

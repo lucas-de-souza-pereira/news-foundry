@@ -31,13 +31,14 @@ export default function RootLayout({
       lang="fr"
       className={cn(
         "h-full",
+        "overflow-hidden",
         "antialiased",
         "font-sans",
         inter.variable,
         ibmPlexSansHeading.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="h-full overflow-hidden flex flex-col">{children}</body>
     </html>
   );
 }
