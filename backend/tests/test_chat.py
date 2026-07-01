@@ -1,13 +1,26 @@
+from unittest.mock import patch, AsyncMock
 from utils.routes import API_BASE_ROUTE, CHAT_ROUTES
 import pytest
 import json
 from httpx import AsyncClient
 from sqlmodel import Session, select
 from models import Chat, User
-from agent.agent import chat_agent
+from agent.agent import chat_agent, resume_agent  
 from pydantic_ai.models.test import TestModel
+from schemas import NewsArticleResponse
 
 chat_agent.model = TestModel(custom_output_text="Réponse simulée du LLM.")
+resume_agent.model = TestModel(custom_output_text="Résumé simulé du LLM.")
+
+@pytest.fixture(autouse=True)
+def mock_get_top_news():
+    with patch("agent.system_prompt.get_top_news", new_callable=AsyncMock) as mock:
+        mock.return_value = [
+            NewsArticleResponse(title="Actu Test 1", summary="Résumé Test 1"),
+            NewsArticleResponse(title="Actu Test 2", summary="Résumé Test 2")
+        ]
+        yield mock
+
 
 @pytest.mark.asyncio
 async def test_create_chat_success(client: AsyncClient, auth_headers_user_1: dict[str, str], session: Session):
