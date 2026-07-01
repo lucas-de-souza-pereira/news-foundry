@@ -1,7 +1,12 @@
+// Next.js
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans } from "next/font/google";
-import "./globals.css";
+
+// Utilities & Libs
 import { cn } from "@/lib/utils";
+
+// Styles
+import "./globals.css";
 
 const ibmPlexSansHeading = IBM_Plex_Sans({
   subsets: ["latin"],

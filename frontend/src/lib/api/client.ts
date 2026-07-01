@@ -23,13 +23,13 @@ export async function apiFetch<T>(
       ...fetchOptions,
       headers,
     });
-  } catch (err) {
+  } catch {
     throw new Error(
       "Impossible de contacter le serveur. Veuillez vérifier votre connexion ou le statut du serveur.",
     );
   }
 
-  let data: any = null;
+  let data: unknown = null;
   try {
     data = await res.json();
   } catch {}
@@ -45,10 +45,11 @@ export async function apiFetch<T>(
   }
 
   if (!res.ok) {
+    const errorData = data as { detail?: string; message?: string } | null;
     throw new Error(
-      data?.detail ?? data?.message ?? `HTTP error ${res.status}`,
+      errorData?.detail ?? errorData?.message ?? `HTTP error ${res.status}`,
     );
   }
 
-  return data;
+  return data as T;
 }

@@ -1,18 +1,18 @@
 // Next.js
 import Link from "next/link";
 
-// Config & Routes
+// Routes & Config
 import { APP_ROUTES } from "@/lib/routes";
 
-// Utils
+// Utilities & Libs
 import { cn, formatShortFrenchDate } from "@/lib/utils";
 
-// Types
+// Types & Validation
 import { Chat } from "@/lib/validation/chat";
 
 interface ChatProps {
   chat: Chat;
-  isActive: Boolean;
+  isActive: boolean;
 }
 
 export default function ChatListItem({ chat, isActive }: ChatProps) {

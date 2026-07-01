@@ -1,11 +1,19 @@
 "use client";
 
+// React & Hooks
+import { useEffect } from "react";
+
 // Next.js
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
+
+// UI Components
+import { Button } from "@/components/ui/button";
 
 // Components
 import ChatListItem from "@/components/shared/slidebar/chat-list-item";
-import { Button } from "@/components/ui/button";
+
+// Icons
+import { Logo, LogOutIcon } from "@/components/icons";
 
 // Contexts
 import { useChats } from "@/context/chat-context";
@@ -13,12 +21,8 @@ import { useChats } from "@/context/chat-context";
 // Routes & Config
 import { APP_ROUTES } from "@/lib/routes";
 
-// Types
-import { Logo, LogOutIcon } from "@/components/icons";
-
-// Utils
+// Utilities & Libs
 import { StorageUtility } from "@/lib/local-storage";
-import { useEffect } from "react";
 
 export default function Sidebar() {
   const router = useRouter();

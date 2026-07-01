@@ -1,7 +1,14 @@
-import { cn, formatHourMinutes } from "@/lib/utils";
-import { ChatMessage } from "@/lib/validation/chat";
-import { BotIcon, UserIcon } from "../icons";
+// External Libraries
 import Markdown from "react-markdown";
+
+// Icons
+import { BotIcon, UserIcon } from "../icons";
+
+// Utilities & Libs
+import { cn, formatHourMinutes } from "@/lib/utils";
+
+// Types & Validation
+import { ChatMessage } from "@/lib/validation/chat";
 
 interface MessageProps {
   message: ChatMessage;
@@ -62,5 +69,3 @@ export default function Message({ message }: MessageProps) {
     </div>
   );
 }
-
-(" flex-row ");

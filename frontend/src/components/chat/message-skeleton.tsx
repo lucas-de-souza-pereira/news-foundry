@@ -1,3 +1,4 @@
+// Utilities & Libs
 import { cn } from "@/lib/utils";
 
 export function MessageSkeleton({ isUser }: { isUser: boolean }) {

@@ -1,33 +1,25 @@
 "use client";
 
 // React & Hooks
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // Next.js
 import { usePathname, useRouter } from "next/navigation";
 
+// External Libraries
+import { Toaster } from "sonner";
+
 // Components
-import ChatListItem from "@/components/shared/slidebar/chat-list-item";
-
-// Actions
-import { getAllChatAction } from "@/lib/actions/chat";
-
-// Contexts
-import { AuthProvider, useAuth } from "@/context/auth-context";
-
-// Routes & Config
-import { API_ROUTES, APP_ROUTES } from "@/lib/routes";
-
-// Types
-import { Chat } from "@/lib/validation/chat";
-import { ChatProvider, useChats } from "@/context/chat-context";
-import { Logo, LogOutIcon } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import { StorageUtility } from "@/lib/local-storage";
 import Sidebar from "@/components/shared/slidebar/sidebar";
 import SubhearderChat from "@/components/shared/header/subhearder-chat";
 import SubheaderNav from "@/components/shared/header/subheader-nav";
-import { Toaster } from "sonner";
+
+// Contexts
+import { AuthProvider, useAuth } from "@/context/auth-context";
+import { ChatProvider } from "@/context/chat-context";
+
+// Routes & Config
+import { APP_ROUTES } from "@/lib/routes";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();

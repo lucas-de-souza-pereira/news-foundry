@@ -1,12 +1,10 @@
-import { ErrorState } from "@/components/shared/states/error-state";
-import { BotIcon } from "@/components/icons";
-
 // Components
 import Message from "./message";
 import { MessageSkeleton } from "./message-skeleton";
 import { TypingIndicator } from "./typing-indicator";
+import { ErrorState } from "@/components/shared/states/error-state";
 
-// Types
+// Types & Validation
 import { ChatMessage } from "@/lib/validation/chat";
 
 interface ChatSectionProps {

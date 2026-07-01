@@ -1,6 +1,9 @@
 "use client";
 
+// External Libraries
 import { AlertCircle, RefreshCw } from "lucide-react";
+
+// UI Components
 import { Button } from "@/components/ui/button";
 
 interface ErrorStateProps {

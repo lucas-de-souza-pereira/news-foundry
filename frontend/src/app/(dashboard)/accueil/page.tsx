@@ -1,25 +1,28 @@
 "use client";
 
-// next
+// React & Hooks
+import { useState } from "react";
+
+// Next.js
 import { useRouter } from "next/navigation";
 
 // Components
 import ChatInput from "@/components/chat/chat-input";
+import BotIntroduction from "@/components/home/bot-introduction";
+import LoadingRing from "@/components/shared/states/loading-ring";
 
 // Contexts
 import { useAuth } from "@/context/auth-context";
+import { useChats } from "@/context/chat-context";
 
 // Actions
 import { startChatAction } from "@/lib/actions/chat";
 
-// Types
-import { ChatCreateResquest } from "@/lib/validation/chat";
+// Routes & Config
 import { APP_ROUTES } from "@/lib/routes";
-import { useChats } from "@/context/chat-context";
-import BotIntroduction from "@/components/home/bot-introduction";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
-import LoadingRing from "@/components/shared/states/loading-ring";
+
+// Types & Validation
+import { ChatCreateResquest } from "@/lib/validation/chat";
 
 export default function Home() {
   const { token } = useAuth();
@@ -53,7 +56,7 @@ export default function Home() {
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex-1 bg-background flex items-center justify-center">
-        <h1 className="sr-only">Page d'accueil</h1>
+        <h1 className="sr-only">{"Page d'accueil"}</h1>
         {isSubmitting ? <LoadingRing /> : <BotIntroduction />}
       </div>
 

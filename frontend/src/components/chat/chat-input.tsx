@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 // UI Components
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+
+// Icons
 import { SendIcon } from "../icons";
 
 interface ChatInputProps {

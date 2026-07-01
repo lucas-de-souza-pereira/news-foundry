@@ -1,13 +1,24 @@
 "use client";
 
+// React & Hooks
+import { useCallback, useEffect, useState } from "react";
+
+// External Libraries
+import { Loader2 } from "lucide-react";
+
+// Components
 import ChatInput from "@/components/chat/chat-input";
 import PressReviewCard from "@/components/press-review/press-review-card";
 import { ErrorState } from "@/components/shared/states/error-state";
+
+// Contexts
 import { useAuth } from "@/context/auth-context";
+
+// Actions
 import { getAllPressReviewAction } from "@/lib/actions/press-review";
+
+// Types & Validation
 import { PressReview } from "@/lib/validation/press-review";
-import { Loader2 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
 
 export default function PressReviewPage() {
   const { token } = useAuth();
@@ -18,12 +29,11 @@ export default function PressReviewPage() {
 
   const fetchPressReviews = useCallback(async () => {
     if (!token) return;
-    setLoading(true);
-    setError(null);
 
     const res = await getAllPressReviewAction(token);
     if (res.success) {
       setPressReviews(res.data);
+      setError(null);
     } else {
       setError(res.error);
     }
@@ -31,8 +41,16 @@ export default function PressReviewPage() {
   }, [token]);
 
   useEffect(() => {
-    fetchPressReviews();
+    Promise.resolve().then(() => {
+      fetchPressReviews();
+    });
   }, [fetchPressReviews]);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    fetchPressReviews();
+  };
 
   const renderListContent = () => {
     if (isLoading) {
@@ -48,7 +66,7 @@ export default function PressReviewPage() {
     if (error) {
       return (
         <div className="flex-1 flex flex-col gap-3 items-center justify-center min-h-[300px]">
-          <ErrorState message={error} reset={fetchPressReviews} />
+          <ErrorState message={error} reset={handleRetry} />
         </div>
       );
     }
@@ -81,7 +99,7 @@ export default function PressReviewPage() {
             Revues de Presse
           </h1>
           <p className="text-base text-subtle tracking-[-0.31px] leading-6">
-            Consultez et gérez vos revues de presse générées par l'IA
+            {"Consultez et gérez vos revues de presse générées par l'IA"}
           </p>
         </div>
         {renderListContent()}

@@ -1,6 +1,11 @@
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+// React & Hooks
 import { ReactNode } from "react";
+
+// Next.js
+import Link from "next/link";
+
+// Utilities & Libs
+import { cn } from "@/lib/utils";
 
 interface NavPillProps {
   path: string;

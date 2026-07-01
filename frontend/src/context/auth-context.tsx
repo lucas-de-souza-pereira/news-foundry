@@ -2,7 +2,7 @@
 // React & Hooks
 import { createContext, useContext, useState, useEffect } from "react";
 
-// Utils
+// Utilities & Libs
 import { StorageUtility, StorageKeys } from "@/lib/local-storage";
 
 interface AuthContextType {
@@ -23,10 +23,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const savedToken = StorageUtility.getItem<string>(
       StorageKeys.SESSION_TOKEN,
     );
-    if (savedToken) {
-      setToken(savedToken);
-    }
-    setIsLoading(false);
+    Promise.resolve().then(() => {
+      if (savedToken) {
+        setToken(savedToken);
+      }
+      setIsLoading(false);
+    });
   }, []);
 
   const login = (newToken: string) => {

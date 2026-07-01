@@ -1,15 +1,13 @@
-// API
-import { apiFetch } from "@/lib/api/client";
+// Routes & Config
+import { API_ROUTES } from "@/lib/routes";
 
-// Utils
+// Utilities & Libs
+import { apiFetch } from "@/lib/api/client";
 import { StorageUtility, StorageKeys } from "@/lib/local-storage";
 
-// Types
+// Types & Validation
 import { LoginCredentials, TokenResponse } from "@/lib/validation/auth";
 import { ActionResult } from "@/lib/validation/action";
-
-// Routes
-import { API_ROUTES } from "@/lib/routes";
 
 export async function loginAction(
   credentials: LoginCredentials,

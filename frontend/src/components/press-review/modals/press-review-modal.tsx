@@ -1,5 +1,10 @@
 "use client";
 
+// React & Hooks
+import { useState } from "react";
+
+// UI Components
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,9 +14,11 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+
+// Components
 import PressReviewForm from "./press-review-form";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+
+// Icons
 import { DocumentIcon } from "@/components/icons";
 
 export default function PressReviewModal() {

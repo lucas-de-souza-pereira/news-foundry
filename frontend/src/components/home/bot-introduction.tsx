@@ -1,3 +1,4 @@
+// Icons
 import { BotIcon } from "../icons";
 
 export default function BotIntroduction() {
@@ -12,7 +13,7 @@ export default function BotIntroduction() {
       </h2>
 
       <p className="text-subtle-light px-3 mt-10">
-        Posez-moi des questions sur l'actualité récente ou demandez-moi de
+        Posez-moi des questions sur l&apos;actualité récente ou demandez-moi de
         générer une revue de presse sur un sujet spécifique.
       </p>
 
@@ -24,9 +25,11 @@ export default function BotIntroduction() {
           className=" list-disc list-inside  flex flex-col gap-y-2.25 mt-2.25"
           aria-labelledby="examples-heading"
         >
-          <li>"Quelles sont les dernières nouvelles en politique ?"</li>
-          <li>"Génère une revue de presse sur la technologie"</li>
-          <li>"Résume l'actualité économique de la semaine"</li>
+          <li>
+            &quot;Quelles sont les dernières nouvelles en politique ?&quot;
+          </li>
+          <li>&quot;Génère une revue de presse sur la technologie&quot;</li>
+          <li>&quot;Résume l&apos;actualité économique de la semaine&quot;</li>
         </ul>
       </div>
     </div>

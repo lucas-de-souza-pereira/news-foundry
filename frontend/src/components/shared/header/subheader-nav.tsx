@@ -1,8 +1,15 @@
 "use client";
-import { APP_ROUTES } from "@/lib/routes";
-import NavPill from "@/components/shared/header/nav-pill";
-import { ChatIcon, DocumentIcon } from "@/components/icons";
+// Next.js
 import { usePathname } from "next/navigation";
+
+// Components
+import NavPill from "@/components/shared/header/nav-pill";
+
+// Icons
+import { ChatIcon, DocumentIcon } from "@/components/icons";
+
+// Routes & Config
+import { APP_ROUTES } from "@/lib/routes";
 
 export default function SubheaderNav() {
   const pathname = usePathname();

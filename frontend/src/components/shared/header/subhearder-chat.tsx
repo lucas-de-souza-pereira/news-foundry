@@ -1,11 +1,15 @@
 "use client";
-// next
+// Next.js
 import Link from "next/link";
 
-// Routes
-import { APP_ROUTES } from "@/lib/routes";
-import { ArrowLeft } from "@/components/icons";
+// Components
 import PressReviewModal from "@/components/press-review/modals/press-review-modal";
+
+// Icons
+import { ArrowLeft } from "@/components/icons";
+
+// Routes & Config
+import { APP_ROUTES } from "@/lib/routes";
 
 export default function SubhearderChat() {
   return (

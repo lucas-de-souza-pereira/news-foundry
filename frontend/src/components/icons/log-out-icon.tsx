@@ -1,3 +1,4 @@
+// React & Hooks
 import type { SVGProps } from "react";
 
 export function LogOutIcon(props: SVGProps<SVGSVGElement>) {

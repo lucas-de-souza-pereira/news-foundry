@@ -1,9 +1,7 @@
 "use client";
-// next
-import Link from "next/link";
 
 // React & Hooks
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useCallback, useState } from "react";
 
 // Components
 import ChatSection from "@/components/chat/chat-section";
@@ -15,7 +13,7 @@ import { useAuth } from "@/context/auth-context";
 // Actions
 import { sendMessageAction, getChatAction } from "@/lib/actions/chat";
 
-// Types
+// Types & Validation
 import {
   ChatDetail,
   ChatMessage,
@@ -37,22 +35,29 @@ export default function ChatDetailsPage({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const loadChat = async () => {
+  const loadChat = useCallback(async () => {
     if (!token) return;
-    setLoading(true);
-    setError(null);
     const res = await getChatAction({ chat_id: chatId }, token);
     if (res.success) {
       setChat(res.data);
+      setError(null);
     } else {
       setError(res.error);
     }
     setLoading(false);
-  };
+  }, [token, chatId]);
 
   useEffect(() => {
+    Promise.resolve().then(() => {
+      loadChat();
+    });
+  }, [loadChat]);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
     loadChat();
-  }, [token, chatId]);
+  };
 
   const handleSendMessage = async (message: string) => {
     if (!token) return;
@@ -109,13 +114,13 @@ export default function ChatDetailsPage({
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <h1 className="sr-only">Page de chat avec l'agent IA</h1>
+      <h1 className="sr-only">{"Page de chat avec l'agent IA"}</h1>
       <ChatSection
         history={chat?.history ?? []}
         isLoading={loading}
         isSubmitting={isSubmitting}
         error={error}
-        onRetry={loadChat}
+        onRetry={handleRetry}
       />
       <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
         <ChatInput

@@ -1,13 +1,12 @@
-// API
-import { apiFetch } from "@/lib/api/client";
-
-// Utils
-import { ActionResult } from "@/lib/validation/action";
-
-// Routes
+// Routes & Config
 import { API_ROUTES } from "@/lib/routes";
 
-// Types
+// Utilities & Libs
+import { apiFetch } from "@/lib/api/client";
+
+// Types & Validation
+import { ActionResult } from "@/lib/validation/action";
+import { AuthToken } from "../validation/auth";
 import {
   ChatCreateResquest,
   ChatResponse,
@@ -16,7 +15,6 @@ import {
   MessageSendResponse,
   ChatDetailRequest,
 } from "../validation/chat";
-import { AuthToken } from "../validation/auth";
 
 export async function startChatAction(
   request: ChatCreateResquest,

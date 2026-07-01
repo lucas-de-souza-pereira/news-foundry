@@ -1,5 +1,10 @@
-import { apiFetch } from "../api/client";
+// Routes & Config
 import { API_ROUTES } from "../routes";
+
+// Utilities & Libs
+import { apiFetch } from "../api/client";
+
+// Types & Validation
 import { ActionResult } from "../validation/action";
 import { AuthToken } from "../validation/auth";
 import {

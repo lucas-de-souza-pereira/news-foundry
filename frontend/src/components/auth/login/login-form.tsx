@@ -1,8 +1,8 @@
 "use client";
-// React
+// React & Hooks
 import { useEffect, useState } from "react";
 
-// Next
+// Next.js
 import { useRouter, useSearchParams } from "next/navigation";
 
 // UI Components
@@ -12,12 +12,14 @@ import { Button } from "@/components/ui/button";
 // Actions
 import { loginAction } from "@/lib/actions/auth";
 
-// Types
-import { LoginCredentials } from "@/lib/validation/auth";
-
-// Routes
+// Routes & Config
 import { APP_ROUTES } from "@/lib/routes";
+
+// Utilities & Libs
 import { cn } from "@/lib/utils";
+
+// Types & Validation
+import { LoginCredentials } from "@/lib/validation/auth";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -32,7 +34,9 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (isExpired === "1") {
-      setError("Votre session a expiré. Veuillez vous reconnecter.");
+      Promise.resolve().then(() => {
+        setError("Votre session a expiré. Veuillez vous reconnecter.");
+      });
     }
   }, [isExpired]);
 

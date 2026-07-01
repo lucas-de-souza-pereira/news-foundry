@@ -1,3 +1,4 @@
+// Icons
 import { BotIcon } from "@/components/icons";
 
 export function TypingIndicator() {

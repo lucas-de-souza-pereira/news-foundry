@@ -1,9 +1,9 @@
 "use client";
 
-// React
+// React & Hooks
 import { useState } from "react";
 
-// Next
+// Next.js
 import { useParams, useRouter } from "next/navigation";
 
 // UI Components
@@ -13,16 +13,16 @@ import { Input } from "@/components/ui/input";
 // Contexts
 import { useAuth } from "@/context/auth-context";
 
-// Server Actions
+// Actions
 import { generatePressReviewAction } from "@/lib/actions/press-review";
 
-// Routes
+// Routes & Config
 import { APP_ROUTES } from "@/lib/routes";
 
-// Utilities
+// Utilities & Libs
 import { cn } from "@/lib/utils";
 
-// Types
+// Types & Validation
 import { PressReviewRequest } from "@/lib/validation/press-review";
 
 interface PressReviewFormProps {
