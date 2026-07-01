@@ -24,11 +24,16 @@ def get_chat_system_prompt(ctx: RunContext[str]) -> str:
 
 
 @chat_agent.tool_plain 
-async def search_news(query: str) -> List[NewsArticleResponse]:
-    articles = await get_searched_news(query=query)
-    return articles   
-
-
+async def search_news(query: str) -> str:
+    """Search for recent news articles on a query. Returns a summary or error message."""
+    try:
+        articles = await get_searched_news(query=query)
+        if not articles:
+            return "No articles found or WorldNews API is currently unavailable."
+        return articles
+    except Exception as e:
+        # L'agent apprend qu'il y a eu un problème technique et peut l'expliquer à l'utilisateur
+        return f"Error: Technical issue while searching for news: {str(e)}"
 
 press_review_agent = Agent(
     'mistral:mistral-small-latest',

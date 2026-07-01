@@ -66,6 +66,8 @@ export default function ChatDetailsPage({
       timestamp: new Date().toISOString(),
     };
 
+    const previousHistory = chat?.history ?? [];
+
     setChat((prevChat) => {
       if (!prevChat) return null;
       return {
@@ -91,8 +93,18 @@ export default function ChatDetailsPage({
       });
       setIsSubmitting(false);
     } else {
-      console.error(res.error);
+      setChat((prevChat) => {
+        if (!prevChat) return null;
+        return {
+          ...prevChat,
+          history: previousHistory,
+        };
+      });
+      setError(
+        res.error || "Une erreur est survenue lors de l'envoi du message.",
+      );
     }
+    setIsSubmitting(false);
   };
 
   return (

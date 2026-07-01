@@ -58,7 +58,8 @@ async def get_searched_news(query: str, country: str = "fr", language: str = "fr
     Récupère les news depuis l'API World News.
     """
     if not WORLD_NEWS_API_KEY:
-        raise ValueError("WORLD_NEWS_API_KEY is not set in environment variables.")
+        print("Warning: WORLD_NEWS_API_KEY is missing.")
+        return [] 
 
     url = SEARCH_NEWS_ENDPOINT
     params = {

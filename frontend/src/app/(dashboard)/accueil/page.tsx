@@ -19,6 +19,7 @@ import { useChats } from "@/context/chat-context";
 import BotIntroduction from "@/components/home/bot-introduction";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import LoadingRing from "@/components/shared/states/loading-ring";
 
 export default function Home() {
   const { token } = useAuth();
@@ -52,20 +53,7 @@ export default function Home() {
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex-1 bg-background flex items-center justify-center">
-        {isSubmitting ? (
-          <div
-            role="status"
-            aria-live="polite"
-            className="flex flex-col items-center gap-y-4"
-          >
-            <Loader2 className="size-16 animate-spin text-primary" />
-            <p className="text-subtle text-sm animate-pulse">
-              Recherche et analyse des actualités en cours...
-            </p>
-          </div>
-        ) : (
-          <BotIntroduction />
-        )}
+        {isSubmitting ? <LoadingRing /> : <BotIntroduction />}
       </div>
 
       <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
