@@ -40,12 +40,17 @@ export default function ChatSection({
           <MessageSkeleton isUser={false} />
         </>
       ) : (
-        <>
+        <div
+          className=""
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+        >
           {history.map((m, i) => (
             <Message key={`message-${i}`} message={m} />
           ))}
           {isSubmitting && <TypingIndicator />}
-        </>
+        </div>
       )}
     </div>
   );

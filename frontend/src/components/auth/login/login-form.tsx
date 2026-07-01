@@ -103,8 +103,16 @@ export default function LoginForm() {
         {isSubmitting ? "Connexion en cours..." : "Se connecter"}
       </Button>
 
-      {error && <p className="text-destructive text-center text-sm">{error}</p>}
-      {success && <p className="text-green-500 text-center">{success}</p>}
+      {error && (
+        <p className="text-destructive text-center text-sm" aria-live="polite">
+          {error}
+        </p>
+      )}
+      {success && (
+        <p className="text-green-500 text-center" aria-live="polite">
+          {success}
+        </p>
+      )}
     </form>
   );
 }

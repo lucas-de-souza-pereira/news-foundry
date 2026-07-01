@@ -27,6 +27,7 @@ import { StorageUtility } from "@/lib/local-storage";
 import Sidebar from "@/components/shared/slidebar/sidebar";
 import SubhearderChat from "@/components/shared/header/subhearder-chat";
 import SubheaderNav from "@/components/shared/header/subheader-nav";
+import { Toaster } from "sonner";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -56,8 +57,6 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isChatPage = pathname.startsWith("/chat");
 
-
-
   return (
     <div className="flex flex-row h-screen min-h-0 overflow-hidden">
       <Sidebar />
@@ -82,7 +81,10 @@ export default function HomeLayout({
     <AuthProvider>
       <ProtectedRoute>
         <ChatProvider>
-          <AuthenticatedLayout>{children}</AuthenticatedLayout>
+          <AuthenticatedLayout>
+            {children}
+            <Toaster />
+          </AuthenticatedLayout>
         </ChatProvider>
       </ProtectedRoute>
     </AuthProvider>

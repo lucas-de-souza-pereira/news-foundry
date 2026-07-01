@@ -53,6 +53,7 @@ export default function Home() {
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex-1 bg-background flex items-center justify-center">
+        <h1 className="sr-only">Page d'accueil</h1>
         {isSubmitting ? <LoadingRing /> : <BotIntroduction />}
       </div>
 

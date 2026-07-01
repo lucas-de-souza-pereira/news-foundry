@@ -77,7 +77,7 @@ export default function ChatInput({
         disabled:text-button-inactive-bg disabled:bg-button-disabled-icon  hover:bg-dark focus:bg-dark"
         disabled={disabled || isSubmitting || (!isFocused && !input)}
       >
-        <SendIcon className="w-4 h-4" />
+        <SendIcon className="w-4 h-4" aria-hidden="true" />
         <span className="sr-only">
           Envoyer le message {isNewChat ? "pour démarer une conversation" : ""}
         </span>

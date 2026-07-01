@@ -6,6 +6,7 @@ export default function Login() {
     <div className="flex h-screen bg-grid-pattern w-screen items-center justify-center">
       <div className="bg-card py-12.5 px-8 rounded-xl w-[448px]">
         <div className="flex flex-col items-center gap-6">
+          <h1 className="sr-only">Se connecter à News Foundry</h1>
           <Logo className="w-49 h-4.25 text-primary " />
           <p className="px-8 text-subtle text-center">
             Connectez-vous pour accéder à votre assistant d'actualités IA

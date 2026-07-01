@@ -109,22 +109,14 @@ export default function ChatDetailsPage({
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      {token ? (
-        <ChatSection
-          history={chat?.history ?? []}
-          isLoading={loading}
-          isSubmitting={isSubmitting}
-          error={error}
-          onRetry={loadChat}
-        />
-      ) : (
-        <div className="flex-1 flex justify-center items-center">
-          <p className="text-subtle text-sm animate-pulse">
-            Connexion en cours...
-          </p>
-        </div>
-      )}
-
+      <h1 className="sr-only">Page de chat avec l'agent IA</h1>
+      <ChatSection
+        history={chat?.history ?? []}
+        isLoading={loading}
+        isSubmitting={isSubmitting}
+        error={error}
+        onRetry={loadChat}
+      />
       <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
         <ChatInput
           sendMessage={handleSendMessage}

@@ -38,7 +38,7 @@ export default function PressReviewCard({ review }: PressReviewCardProps) {
             dateTime={review.created_at}
             className="flex items-center gap-2 text-subtle text-sm leading-none"
           >
-            <CalendarIcon className="size-4" />
+            <CalendarIcon className="size-4" aria-hidden="true" />
             {formatLongFrenchDate(review.created_at) +
               " à " +
               formatHourMinutes(review.created_at)}

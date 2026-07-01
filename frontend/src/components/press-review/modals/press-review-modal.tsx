@@ -29,7 +29,7 @@ export default function PressReviewModal() {
           className="bg-primary rounded-md px-6 py-5.25 flex gap-x-2.5 h-15 hover:bg-dark disabled:bg-muted disabled:text-muted-foreground focus:bg-dark"
           disabled={isModalOpen}
         >
-          <DocumentIcon className="size-4" />
+          <DocumentIcon className="size-4" aria-hidden="true" />
           Générer une revue de presse
         </Button>
       </DialogTrigger>
