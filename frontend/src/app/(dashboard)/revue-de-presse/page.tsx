@@ -93,16 +93,17 @@ export default function PressReviewPage() {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="flex-1 bg-background flex flex-col gap-y-2.5 px-22.5 pt-10 overflow-y-auto  pb-2.5">
-        <div>
+      <div className="flex-1 bg-background flex flex-col gap-y-2.5 px-22.5 pt-10 overflow-y-auto  pb-2.5 ">
+        <div className="max-w-5xl w-full mx-auto">
           <h1 className="text-title font-medium text-2xl tracking-[0.07px] leading-9">
             Revues de Presse
           </h1>
-          <p className="text-base text-subtle tracking-[-0.31px] leading-6">
+          <p className="text-base text-subtle tracking-[-0.31px] leading-6 mb-2.5">
             {"Consultez et gérez vos revues de presse générées par l'IA"}
           </p>
+
+          {renderListContent()}
         </div>
-        {renderListContent()}
       </div>
 
       <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">

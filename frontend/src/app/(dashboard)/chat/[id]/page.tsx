@@ -123,10 +123,12 @@ export default function ChatDetailsPage({
         onRetry={handleRetry}
       />
       <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
-        <ChatInput
-          sendMessage={handleSendMessage}
-          isSubmitting={isSubmitting || loading}
-        />
+        <div className="">
+          <ChatInput
+            sendMessage={handleSendMessage}
+            isSubmitting={isSubmitting || loading}
+          />
+        </div>
       </div>
     </div>
   );

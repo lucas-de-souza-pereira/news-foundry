@@ -31,15 +31,15 @@ export default function ChatSection({
   }
 
   return (
-    <div className="flex-1 bg-background flex flex-col gap-y-8 px-25 py-10 overflow-y-auto min-h-0 ">
+    <div className="flex-1 bg-background flex flex-col gap-y-8 px-25 py-10 overflow-y-auto min-h-0">
       {isLoading ? (
-        <>
+        <div className="max-w-5xl mx-auto w-full flex flex-col gap-y-8">
           <MessageSkeleton isUser={true} />
           <MessageSkeleton isUser={false} />
-        </>
+        </div>
       ) : (
         <div
-          className=""
+          className="max-w-5xl mx-auto w-full flex flex-col gap-y-8"
           role="log"
           aria-live="polite"
           aria-relevant="additions"
