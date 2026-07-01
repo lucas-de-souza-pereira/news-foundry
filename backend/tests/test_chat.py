@@ -4,7 +4,7 @@ import json
 from httpx import AsyncClient
 from sqlmodel import Session, select
 from models import Chat, User
-from agent import chat_agent
+from agent.agent import chat_agent
 from pydantic_ai.models.test import TestModel
 
 chat_agent.model = TestModel(custom_output_text="Réponse simulée du LLM.")

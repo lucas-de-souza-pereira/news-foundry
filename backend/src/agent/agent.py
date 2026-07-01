@@ -32,7 +32,6 @@ async def search_news(query: str) -> str:
             return "No articles found or WorldNews API is currently unavailable."
         return articles
     except Exception as e:
-        # L'agent apprend qu'il y a eu un problème technique et peut l'expliquer à l'utilisateur
         return f"Error: Technical issue while searching for news: {str(e)}"
 
 press_review_agent = Agent(
