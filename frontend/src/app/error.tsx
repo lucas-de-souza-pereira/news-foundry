@@ -1,7 +1,10 @@
 "use client";
 
-import { ErrorState } from "@/components/shared/states/error-state";
+// React & Hooks
 import { useEffect } from "react";
+
+// Components
+import { ErrorState } from "@/components/shared/states/error-state";
 
 export default function Error({
   error,

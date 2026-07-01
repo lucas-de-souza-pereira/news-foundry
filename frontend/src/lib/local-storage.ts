@@ -1,5 +1,5 @@
 const StorageKeys = {
-  SESSION_TOKEN: 'SESSION_TOKEN',
+  SESSION_TOKEN: "SESSION_TOKEN",
 } as const;
 
 export type StorageKeysType = (typeof StorageKeys)[keyof typeof StorageKeys];
@@ -9,7 +9,9 @@ class StorageUtility {
     try {
       const jsonValue = JSON.stringify(value);
       localStorage.setItem(key, jsonValue);
-    } catch (e) {}
+    } catch {
+      // Ignoré
+    }
   }
 
   static getItem<T>(key: StorageKeysType): T | null {
@@ -17,40 +19,50 @@ class StorageUtility {
       const jsonValue = localStorage.getItem(key);
       const value = jsonValue != null ? JSON.parse(jsonValue) : null;
       return value;
-    } catch (e) {
+    } catch {
       return null;
     }
   }
-  
+
   static removeItem(key: StorageKeysType): void {
     try {
       localStorage.removeItem(key);
-    } catch (e) {}
+    } catch {}
   }
 
   static clear(): void {
     try {
       localStorage.clear();
-    } catch (error) {}
+    } catch {}
   }
 
   static getMultipleItems(
     keys: Array<StorageKeysType>,
-  ): Record<StorageKeysType, any> | undefined {
+  ): Record<StorageKeysType, unknown> | undefined {
     try {
-      const result = localStorage.multiGet(keys);
+      const storage = localStorage as unknown as {
+        multiGet?: (keys: string[]) => Array<[string, string | null]>;
+      };
+      if (!storage.multiGet) return undefined;
+
+      const result = storage.multiGet(keys);
       const final = result.reduce(
-        (pre: any, curr: any[]) => {
+        (
+          pre: Record<StorageKeysType, unknown>,
+          curr: [string, string | null],
+        ) => {
           const val = curr[1] ? JSON.parse(curr[1]) : null;
           return {
             ...pre,
             [curr[0]]: val,
           };
         },
-        {} as Record<StorageKeysType, any>,
+        {} as Record<StorageKeysType, unknown>,
       );
       return final;
-    } catch (err) {}
+    } catch {
+      return undefined;
+    }
   }
 }
 

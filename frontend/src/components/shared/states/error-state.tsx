@@ -1,6 +1,9 @@
 "use client";
 
+// External Libraries
 import { AlertCircle, RefreshCw } from "lucide-react";
+
+// UI Components
 import { Button } from "@/components/ui/button";
 
 interface ErrorStateProps {
@@ -29,7 +32,7 @@ export function ErrorState({
         Oups, quelque chose s&apos;est mal passé
       </h1>
 
-      <p className="text-muted-foreground max-w-md mb-8">
+      <p className="text-subtle max-w-md mb-8">
         {message ||
           "Une erreur inattendue est survenue. Nos équipes techniques ont été prévenues."}
         {error?.digest && (
@@ -43,7 +46,7 @@ export function ErrorState({
         {reset && (
           <Button
             onClick={reset}
-            className="bg-primary-button hover:bg-primary-button/90 text-primary-foreground px-8 py-6 h-auto text-base rounded-xl flex items-center gap-2"
+            className="bg-primary hover:bg-dark text-primary-foreground px-8 py-6 h-auto text-base rounded-xl flex items-center gap-2"
           >
             <RefreshCw className="w-5 h-5" />
             Réessayer

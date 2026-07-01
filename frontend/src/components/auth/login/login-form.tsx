@@ -1,21 +1,45 @@
 "use client";
+// React & Hooks
+import { useEffect, useState } from "react";
 
+// Next.js
+import { useRouter } from "next/navigation";
+
+// UI Components
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+
+// Actions
 import { loginAction } from "@/lib/actions/auth";
-import { LoginCredentials } from "@/lib/validation/auth";
+
+// Routes & Config
 import { APP_ROUTES } from "@/lib/routes";
 
-export default function LoginForm() {
-  const router = useRouter();
+// Utilities & Libs
+import { cn } from "@/lib/utils";
 
+// Types & Validation
+import { LoginCredentials } from "@/lib/validation/auth";
+
+interface LoginFormProps extends React.ComponentProps<"form"> {
+  isExpired?: boolean;
+}
+
+export default function LoginForm({ isExpired, ...props }: LoginFormProps) {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isExpired) {
+      Promise.resolve().then(() => {
+        setError("Votre session a expiré. Veuillez vous reconnecter.");
+      });
+    }
+  }, [isExpired]);
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,29 +74,50 @@ export default function LoginForm() {
   };
 
   return (
-    <form
-      className="flex flex-col gap-4 w-full max-w-xs"
-      onSubmit={handleSubmit}
-    >
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      {success && <p className="text-green-500 text-center">{success}</p>}
-      <Input
-        type="email"
-        placeholder="votre.email@exemple.com"
-        aria-label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <Input
-        type="password"
-        placeholder="Mot de passe"
-        aria-label="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Button type="submit" aria-label="Se connecter" disabled={isSubmitting}>
+    <form className="flex flex-col w-full" onSubmit={handleSubmit}>
+      <div className=" flex flex-col gap-y-3">
+        <label htmlFor="email">Adresse email</label>
+        <Input
+          type="email"
+          placeholder="votre.email@exemple.com"
+          aria-label="Adresse email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+
+      <div className="flex flex-col gap-y-3 mt-4">
+        <label htmlFor="password">Mot de passe</label>
+        <Input
+          type="password"
+          placeholder="Mot de passe"
+          aria-label="Mot de passe"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+
+      <Button
+        type="submit"
+        aria-label="Se connecter"
+        disabled={isSubmitting}
+        className={cn("mt-6", error || success ? "mb-3" : "mb-6")}
+      >
         {isSubmitting ? "Connexion en cours..." : "Se connecter"}
       </Button>
+
+      {error && (
+        <p className="text-destructive text-center text-sm" aria-live="polite">
+          {error}
+        </p>
+      )}
+      {success && (
+        <p className="text-green-500 text-center" aria-live="polite">
+          {success}
+        </p>
+      )}
     </form>
   );
 }

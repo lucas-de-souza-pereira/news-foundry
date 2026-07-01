@@ -1,7 +1,7 @@
 "use client";
 
 // React & Hooks
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useCallback, useState } from "react";
 
 // Components
 import ChatSection from "@/components/chat/chat-section";
@@ -13,14 +13,12 @@ import { useAuth } from "@/context/auth-context";
 // Actions
 import { sendMessageAction, getChatAction } from "@/lib/actions/chat";
 
-// Types
+// Types & Validation
 import {
   ChatDetail,
   ChatMessage,
   MessageSendRequest,
 } from "@/lib/validation/chat";
-import Link from "next/link";
-import { APP_ROUTES } from "@/lib/routes";
 
 export default function ChatDetailsPage({
   params,
@@ -28,38 +26,52 @@ export default function ChatDetailsPage({
   params: Promise<{ id: number }>;
 }) {
   const { token } = useAuth();
+
   const resolvedParams = use(params);
   const chatId = resolvedParams.id;
 
   const [chat, setChat] = useState<ChatDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const loadChat = useCallback(async () => {
+    if (!token) return;
+    const res = await getChatAction({ chat_id: chatId }, token);
+    if (res.success) {
+      setChat(res.data);
+      setError(null);
+    } else {
+      setError(res.error);
+    }
+    setLoading(false);
+  }, [token, chatId]);
 
   useEffect(() => {
-    if (!token) return;
+    Promise.resolve().then(() => {
+      loadChat();
+    });
+  }, [loadChat]);
 
-    const loadChat = async () => {
-      setLoading(true);
-      const res = await getChatAction({ chat_id: chatId }, token);
-      if (res.success) {
-        setChat(res.data);
-      } else {
-        setError(res.error);
-      }
-      setLoading(false);
-    };
-
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
     loadChat();
-  }, [token, chatId]);
+  };
 
   const handleSendMessage = async (message: string) => {
     if (!token) return;
+
+    setIsSubmitting(true);
+    setError(null);
 
     const userMessage: ChatMessage = {
       role: "user",
       content: message,
       timestamp: new Date().toISOString(),
     };
+
+    const previousHistory = chat?.history ?? [];
 
     setChat((prevChat) => {
       if (!prevChat) return null;
@@ -84,32 +96,40 @@ export default function ChatDetailsPage({
           history: [...prevChat.history, agentMessage],
         };
       });
+      setIsSubmitting(false);
     } else {
-      console.error(res.error);
+      setChat((prevChat) => {
+        if (!prevChat) return null;
+        return {
+          ...prevChat,
+          history: previousHistory,
+        };
+      });
+      setError(
+        res.error || "Une erreur est survenue lors de l'envoi du message.",
+      );
     }
+    setIsSubmitting(false);
   };
 
-  if (loading) {
-    return <div>Chargement...</div>;
-  }
-
-  if (error) {
-    return <div className="p-4 text-red-500">Erreur: {error}</div>;
-  }
-
   return (
-    <div>
-      <header className="flex flex-row gap-8">
-        <Link href={APP_ROUTES.HOME}>Nouvelle Discussion</Link>
-      </header>
-
-      {token ? (
-        <ChatSection history={chat?.history ?? []} />
-      ) : (
-        <div>Connexion en cours...</div>
-      )}
-
-      <ChatInput sendMessage={handleSendMessage} />
+    <div className="flex-1 flex flex-col min-h-0">
+      <h1 className="sr-only">{"Page de chat avec l'agent IA"}</h1>
+      <ChatSection
+        history={chat?.history ?? []}
+        isLoading={loading}
+        isSubmitting={isSubmitting}
+        error={error}
+        onRetry={handleRetry}
+      />
+      <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
+        <div className="">
+          <ChatInput
+            sendMessage={handleSendMessage}
+            isSubmitting={isSubmitting || loading}
+          />
+        </div>
+      </div>
     </div>
   );
 }

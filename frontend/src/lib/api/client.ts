@@ -1,4 +1,3 @@
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 type FetchOptions = RequestInit & {
@@ -17,35 +16,40 @@ export async function apiFetch<T>(
     ...((fetchOptions.headers as Record<string, string>) ?? {}),
   };
 
-  let res: Response
+  let res: Response;
 
   try {
     res = await fetch(`${API_URL}${path}`, {
       ...fetchOptions,
       headers,
     });
-  } catch (err) {
-    throw new Error("Impossible de contacter le serveur. Veuillez vérifier votre connexion ou le statut du serveur.");
+  } catch {
+    throw new Error(
+      "Impossible de contacter le serveur. Veuillez vérifier votre connexion ou le statut du serveur.",
+    );
   }
 
-  let data: any = null;
+  let data: unknown = null;
   try {
     data = await res.json();
-  } catch {
-  }
+  } catch {}
 
   if (res.status === 401 && !path.includes("/auth/")) {
     if (typeof window !== "undefined") {
-      const { StorageUtility, StorageKeys } = await import("@/lib/local-storage");
+      const { StorageUtility, StorageKeys } =
+        await import("@/lib/local-storage");
       StorageUtility.removeItem(StorageKeys.SESSION_TOKEN);
-      window.location.href = "/login?expired=1";
-      return {} as T; 
+      window.location.href = "/connexion?expired=1";
+      return {} as T;
     }
   }
 
   if (!res.ok) {
-    throw new Error(data?.detail ?? data?.message ?? `HTTP error ${res.status}`);
+    const errorData = data as { detail?: string; message?: string } | null;
+    throw new Error(
+      errorData?.detail ?? errorData?.message ?? `HTTP error ${res.status}`,
+    );
   }
 
-  return data;
+  return data as T;
 }

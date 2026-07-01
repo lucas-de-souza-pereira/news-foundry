@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
-# Authentication Schemas
+#  auth
 class LoginRequest(BaseModel):
     email: str
     password: str
@@ -15,7 +15,7 @@ class TokenData(BaseModel):
     email: str | None = None
 
 
-# Schema to read the full history of a chat
+# chats
 class ChatRead(BaseModel):
     id: int
     user_id: int
@@ -26,12 +26,9 @@ class ChatRead(BaseModel):
         "from_attributes": True
     }
 
-# Received when starting a new chat
 class ChatCreateRequest(BaseModel):
     first_message: str
 
-
-# Returned after the chat is created successfully
 class ChatCreateResponse(BaseModel):
     id: int
     user_id: int
@@ -49,3 +46,32 @@ class MessageSendRequest(BaseModel):
 
 class MessageSendResponse(BaseModel):
     response: Dict[str,Any]
+
+
+# news
+class NewsArticleResponse(BaseModel):
+    title: str
+    summary: str
+
+
+
+# press review
+
+class PressReviewCreateRequest(BaseModel):
+    subject: str
+
+
+class ArticleSynthesis(BaseModel):
+    title: str
+    summary: str 
+
+
+class PressReviewResponse(BaseModel):
+    title: str = Field(
+        ..., 
+        description="The title must strictly follow the format: 'REVUE DE PRESSE [SUBJECT IN UPPERCASE] - [Day Month_in_French Year]' e.g., 'REVUE DE PRESSE FOOTBALL - 30 Septembre 2025'"
+    )
+    subject: str
+    general_summary: str
+    articles: List[ArticleSynthesis]
+    created_at: Optional[datetime] = None

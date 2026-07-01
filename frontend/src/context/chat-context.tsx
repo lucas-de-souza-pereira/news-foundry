@@ -1,9 +1,22 @@
 "use client";
 
+// React & Hooks
+import {
+  useContext,
+  useEffect,
+  useState,
+  createContext,
+  useCallback,
+} from "react";
+
+// Contexts
 import { useAuth } from "./auth-context";
-import { Chat } from "@/lib/validation/chat";
-import { useContext, useEffect, useState, createContext } from "react";
+
+// Actions
 import { getAllChatAction } from "@/lib/actions/chat";
+
+// Types & Validation
+import { Chat } from "@/lib/validation/chat";
 
 interface ChatContextType {
   chats: Chat[];
@@ -17,7 +30,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const { token } = useAuth();
   const [chats, setChats] = useState<Chat[]>([]);
 
-  const refreshChats = async () => {
+  const refreshChats = useCallback(async () => {
     if (!token) return;
     const res = await getAllChatAction(token);
     if (res.success) {
@@ -25,17 +38,17 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     } else {
       console.error(res.error);
     }
-  };
-
-  useEffect(() => {
-    refreshChats();
   }, [token]);
 
+  useEffect(() => {
+    Promise.resolve().then(() => {
+      refreshChats();
+    });
+  }, [refreshChats]);
+
   const addChat = (newChat: Chat) => {
-    console.log("1. addChat appelé avec :", newChat);
     setChats((prev) => {
       const nextChats = [newChat, ...prev];
-      console.log("2. Prochain état des chats :", nextChats);
       return nextChats;
     });
   };

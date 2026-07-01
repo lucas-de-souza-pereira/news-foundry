@@ -1,19 +1,55 @@
 // Components
 import Message from "./message";
+import { MessageSkeleton } from "./message-skeleton";
+import { TypingIndicator } from "./typing-indicator";
+import { ErrorState } from "@/components/shared/states/error-state";
 
-// Types
+// Types & Validation
 import { ChatMessage } from "@/lib/validation/chat";
 
 interface ChatSectionProps {
   history: ChatMessage[];
+  isLoading?: boolean;
+  isSubmitting?: boolean;
+  error?: string | null;
+  onRetry?: () => void;
 }
 
-export default function ChatSection({ history }: ChatSectionProps) {
+export default function ChatSection({
+  history,
+  isLoading,
+  isSubmitting,
+  error,
+  onRetry,
+}: ChatSectionProps) {
+  if (error) {
+    return (
+      <div className="flex-1 bg-background flex flex-col justify-center items-center min-h-0">
+        <ErrorState message={error} reset={onRetry} />
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {history.map((m, i) => (
-        <Message key={`message-${i}`} message={m} />
-      ))}
+    <div className="flex-1 bg-background flex flex-col gap-y-8 px-25 py-10 overflow-y-auto min-h-0">
+      {isLoading ? (
+        <div className="max-w-5xl mx-auto w-full flex flex-col gap-y-8">
+          <MessageSkeleton isUser={true} />
+          <MessageSkeleton isUser={false} />
+        </div>
+      ) : (
+        <div
+          className="max-w-5xl mx-auto w-full flex flex-col gap-y-8"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+        >
+          {history.map((m, i) => (
+            <Message key={`message-${i}`} message={m} />
+          ))}
+          {isSubmitting && <TypingIndicator />}
+        </div>
+      )}
     </div>
   );
 }

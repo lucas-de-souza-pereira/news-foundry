@@ -1,26 +1,25 @@
 "use client";
 
 // React & Hooks
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // Next.js
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
+// External Libraries
+import { Toaster } from "sonner";
 
 // Components
-import ChatSelected from "@/components/chat/chat-selected";
-
-// Actions
-import { getAllChatAction } from "@/lib/actions/chat";
+import Sidebar from "@/components/shared/slidebar/sidebar";
+import SubhearderChat from "@/components/shared/header/subhearder-chat";
+import SubheaderNav from "@/components/shared/header/subheader-nav";
 
 // Contexts
 import { AuthProvider, useAuth } from "@/context/auth-context";
+import { ChatProvider } from "@/context/chat-context";
 
 // Routes & Config
 import { APP_ROUTES } from "@/lib/routes";
-
-// Types
-import { Chat } from "@/lib/validation/chat";
-import { ChatProvider, useChats } from "@/context/chat-context";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -47,22 +46,20 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
-  const { chats } = useChats();
-  return (
-    <div className="flex flex-row">
-      <aside>
-        <nav>
-          <ul>
-            {chats.map((c) => (
-              <li key={c.id}>
-                <ChatSelected chat={c} />
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
+  const pathname = usePathname();
+  const isChatPage = pathname.startsWith("/chat");
 
-      <main>{children}</main>
+  return (
+    <div className="flex flex-row h-screen min-h-0 overflow-hidden">
+      <Sidebar />
+
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 h-full">
+        <header>{isChatPage ? <SubhearderChat /> : <SubheaderNav />}</header>
+
+        <main className="flex-1 flex flex-col min-w-0 min-h-0 overflow-hidden">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
@@ -76,7 +73,10 @@ export default function HomeLayout({
     <AuthProvider>
       <ProtectedRoute>
         <ChatProvider>
-          <AuthenticatedLayout>{children}</AuthenticatedLayout>
+          <AuthenticatedLayout>
+            {children}
+            <Toaster />
+          </AuthenticatedLayout>
         </ChatProvider>
       </ProtectedRoute>
     </AuthProvider>
