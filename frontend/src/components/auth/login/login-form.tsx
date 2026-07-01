@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 // Next.js
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // UI Components
 import { Input } from "@/components/ui/input";
@@ -21,19 +21,20 @@ import { cn } from "@/lib/utils";
 // Types & Validation
 import { LoginCredentials } from "@/lib/validation/auth";
 
-export default function LoginForm() {
+interface LoginFormProps extends React.ComponentProps<"form"> {
+  isExpired?: boolean;
+}
+
+export default function LoginForm({ isExpired, ...props }: LoginFormProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isExpired = searchParams.get("expired");
-
   useEffect(() => {
-    if (isExpired === "1") {
+    if (isExpired) {
       Promise.resolve().then(() => {
         setError("Votre session a expiré. Veuillez vous reconnecter.");
       });

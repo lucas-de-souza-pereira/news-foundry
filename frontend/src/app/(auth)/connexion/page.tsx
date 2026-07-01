@@ -4,7 +4,14 @@ import LoginForm from "@/components/auth/login/login-form";
 // Icons
 import { Logo } from "@/components/icons";
 
-export default function Login() {
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function Login({ searchParams }: PageProps) {
+  const resolvedParams = await searchParams;
+  const isExpired = resolvedParams.expired === "1";
+
   return (
     <div className="flex h-screen bg-grid-pattern w-screen items-center justify-center">
       <div className="bg-card py-12.5 px-8 rounded-xl w-[448px]">
@@ -17,7 +24,10 @@ export default function Login() {
         </div>
 
         <div className="flex justify-center mt-6">
-          <LoginForm aria-label="Formulaire de connexion" />
+          <LoginForm
+            aria-label="Formulaire de connexion"
+            isExpired={isExpired}
+          />
         </div>
       </div>
     </div>
