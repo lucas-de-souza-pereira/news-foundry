@@ -1,5 +1,8 @@
 "use client";
 
+// Next.js
+import { notFound } from "next/navigation";
+
 // React & Hooks
 import { use, useEffect, useCallback, useState } from "react";
 
@@ -23,29 +26,43 @@ import {
 export default function ChatDetailsPage({
   params,
 }: {
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 }) {
   const { token } = useAuth();
 
   const resolvedParams = use(params);
-  const chatId = resolvedParams.id;
+  const rawId = resolvedParams.id;
+
+  const isInvalidId = !/^\d+$/.test(rawId);
+  const chatId = isInvalidId ? NaN : parseInt(rawId, 10);
 
   const [chat, setChat] = useState<ChatDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
+
+  if (isNotFound || isInvalidId) return notFound();
 
   const loadChat = useCallback(async () => {
-    if (!token) return;
+    if (!token || isInvalidId) return;
     const res = await getChatAction({ chat_id: chatId }, token);
     if (res.success) {
       setChat(res.data);
       setError(null);
     } else {
-      setError(res.error);
+      console.log("Error fetching chat:", res);
+      if (
+        res.error === "Chat not found" ||
+        res.error === "You do not have access to this chat"
+      ) {
+        setIsNotFound(true);
+      } else {
+        setError(res.error);
+      }
     }
     setLoading(false);
-  }, [token, chatId]);
+  }, [token, chatId, isInvalidId]);
 
   useEffect(() => {
     Promise.resolve().then(() => {

@@ -142,6 +142,7 @@ def get_chat(
     Récupère l'historique complet d'un fil de discussion spécifique.
     Enforce que seuls les propriétaires peuvent accéder à leurs discussions.
     """
+
     db_chat = db.get(Chat, chat_id)
     if not db_chat:
         raise HTTPException(
