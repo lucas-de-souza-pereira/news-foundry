@@ -25,7 +25,7 @@ def get_chat_system_prompt(ctx: RunContext[str]) -> str:
 
 @chat_agent.tool_plain 
 async def search_news(query: str) -> str:
-    """Search for recent news articles on a query. Returns a summary or error message."""
+    """Recherche les articles d'actualités récents sur une requête. Retourne un résumé ou un message d'erreur."""
     try:
         articles = await get_searched_news(query=query)
         if not articles:

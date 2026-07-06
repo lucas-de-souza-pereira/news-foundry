@@ -1,23 +1,14 @@
 "use client";
 
-// External Libraries
-import { toast, Toaster } from "sonner";
-
-// UI Components
-import { Button } from "../ui/button";
-
-// Icons
-import { CalendarIcon } from "../icons";
-
-// Utilities & Libs
 import {
   formatHourMinutes,
   formatLongFrenchDate,
   formatWeekNumber,
 } from "@/lib/utils";
-
-// Types & Validation
 import { PressReview } from "@/lib/validation/press-review";
+import { CalendarIcon } from "../icons";
+import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 interface PressReviewCardProps {
   review: PressReview;
@@ -70,7 +61,6 @@ export default function PressReviewCard({ review }: PressReviewCardProps) {
           ))}
         </ul>
       </div>
-      <Toaster />
     </article>
   );
 }
