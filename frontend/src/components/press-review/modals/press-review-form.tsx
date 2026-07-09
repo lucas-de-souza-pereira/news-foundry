@@ -43,14 +43,24 @@ export default function PressReviewForm({ onSuccess }: PressReviewFormProps) {
     e.preventDefault();
     if (!token) return;
 
-    if (!subject.trim()) {
-      setError("Veuillez choisir un thème");
+    const trimmedSubject = subject.trim();
+
+    if (!trimmedSubject) {
+      setError("Veuillez choisir un thème.");
+      return;
+    }
+
+    const isOnlyNumbers = /^\d+$/.test(trimmedSubject);
+    if (isOnlyNumbers) {
+      setError(
+        "Le format des données est incorrect. Le thème ne peut pas contenir uniquement des chiffres.",
+      );
       return;
     }
 
     const request: PressReviewRequest = {
       chat_id,
-      subject,
+      subject: trimmedSubject,
     };
 
     setIsSubmitting(true);
@@ -72,6 +82,7 @@ export default function PressReviewForm({ onSuccess }: PressReviewFormProps) {
     <form
       onSubmit={handleSubmit}
       className="flex flex-col items-start w-full px-11 gap-y-4"
+      noValidate
     >
       <label htmlFor="theme-input" className="text-base leading-none">
         Thème de la revue de presse
@@ -79,7 +90,10 @@ export default function PressReviewForm({ onSuccess }: PressReviewFormProps) {
       <Input
         id="theme-input"
         value={subject}
-        onChange={(e) => setSubject(e.target.value)}
+        onChange={(e) => {
+          setSubject(e.target.value);
+          if (error) setError(null);
+        }}
       />
 
       <div aria-live="polite" className="w-full">
