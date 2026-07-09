@@ -25,7 +25,10 @@ export function ErrorState({
       role="alert"
     >
       <div className="bg-destructive/10 p-4 rounded-full mb-6">
-        <AlertCircle className="w-12 h-12 text-destructive" />
+        <AlertCircle
+          className="w-12 h-12 text-destructive"
+          aria-hidden={true}
+        />
       </div>
 
       <h1 className="text-2xl font-bold text-foreground mb-2">
@@ -48,7 +51,7 @@ export function ErrorState({
             onClick={reset}
             className="bg-primary hover:bg-dark text-primary-foreground px-8 py-6 h-auto text-base rounded-xl flex items-center gap-2"
           >
-            <RefreshCw className="w-5 h-5" />
+            <RefreshCw className="w-5 h-5" aria-hidden={true} />
             Réessayer
           </Button>
         )}

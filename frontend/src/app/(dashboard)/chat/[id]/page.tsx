@@ -42,8 +42,6 @@ export default function ChatDetailsPage({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
 
-  if (isNotFound || isInvalidId) return notFound();
-
   const loadChat = useCallback(async () => {
     if (!token || isInvalidId) return;
     const res = await getChatAction({ chat_id: chatId }, token);
@@ -69,6 +67,8 @@ export default function ChatDetailsPage({
       loadChat();
     });
   }, [loadChat]);
+
+  if (isNotFound || isInvalidId) return notFound();
 
   const handleRetry = () => {
     setLoading(true);

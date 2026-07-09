@@ -13,8 +13,8 @@ export default function NotFound() {
           </h1>
           <h2 className="text-2xl font-bold text-subtle">Page introuvable</h2>
           <p className="text-subtle-light text-sm max-w-sm mx-auto leading-relaxed">
-            Oups ! La page que vous recherchez semble s'être perdue dans nos
-            archives ou n'existe plus.
+            Oups ! La page que vous recherchez semble s&apos;être perdue dans
+            nos archives ou n&apos;existe plus.
           </p>
         </div>
 
@@ -24,7 +24,7 @@ export default function NotFound() {
             className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-primary-foreground bg-primary rounded-md"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            Retourner à l'accueil
+            Retourner à l&apos;accueil
           </Link>
         </div>
       </div>

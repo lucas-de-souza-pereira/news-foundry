@@ -23,20 +23,21 @@ import { APP_ROUTES } from "@/lib/routes";
 
 // Types & Validation
 import { ChatCreateResquest } from "@/lib/validation/chat";
+import { ErrorState } from "@/components/shared/states/error-state";
 
 export default function Home() {
   const { token } = useAuth();
   const router = useRouter();
-  const { addChat } = useChats();
+  const { addChat, errorChats, refreshChats } = useChats();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleStartNewChat = async (message: string) => {
     if (!token) return;
 
     setIsSubmitting(true);
-    setError(null);
+    setSubmitError(null);
 
     const request: ChatCreateResquest = {
       first_message: message,
@@ -49,15 +50,28 @@ export default function Home() {
       setIsSubmitting(false);
       router.push(APP_ROUTES.CHAT(res.data.id));
     } else {
-      setError(res.error);
+      setSubmitError(res.error);
+      setIsSubmitting(false);
     }
+  };
+
+  const renderContent = () => {
+    if (errorChats) {
+      return <ErrorState message={errorChats} reset={refreshChats} />;
+    }
+
+    if (isSubmitting) {
+      return <LoadingRing />;
+    }
+
+    return <BotIntroduction />;
   };
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex-1 bg-background flex items-center justify-center">
         <h1 className="sr-only">{"Page d'accueil"}</h1>
-        {isSubmitting ? <LoadingRing /> : <BotIntroduction />}
+        {renderContent()}
       </div>
 
       <div className="bg-card px-18 py-4.25 w-full flex flex-col gap-y-3">
@@ -65,9 +79,10 @@ export default function Home() {
           sendMessage={handleStartNewChat}
           isSubmitting={isSubmitting}
           isNewChat={true}
+          disabled={isSubmitting || !!errorChats}
         />
-        {error && (
-          <p className="text-destructive text-center text-sm">{error}</p>
+        {submitError && (
+          <p className="text-destructive text-center text-sm">{submitError}</p>
         )}
       </div>
     </div>

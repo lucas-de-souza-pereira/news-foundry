@@ -25,7 +25,7 @@ interface LoginFormProps extends React.ComponentProps<"form"> {
   isExpired?: boolean;
 }
 
-export default function LoginForm({ isExpired, ...props }: LoginFormProps) {
+export default function LoginForm({ isExpired }: LoginFormProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
