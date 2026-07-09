@@ -12,6 +12,8 @@ dependencies = [
     "bcrypt>=4.3.0",
     "PyJWT>=2.13.0",
     "pydantic-ai>=0.0.18",
+    "mlflow>=3.14.0",
+    "opentelemetry-sdk>=1.39.1",
 ]
 
 [dependency-groups]
