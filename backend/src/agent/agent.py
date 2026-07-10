@@ -8,13 +8,15 @@ from schemas import NewsArticleResponse
 
 resume_agent = Agent(
     'mistral:mistral-small-latest',
-    system_prompt=RESUME_AGENT_SYSTEM_PROMPT
+    system_prompt=RESUME_AGENT_SYSTEM_PROMPT,
+    retries=3
 )
 
 chat_agent = Agent(
     'mistral:mistral-small-latest',
     deps_type=str,
-    system_prompt=CHAT_AGENT_BASE_PROMPT
+    system_prompt=CHAT_AGENT_BASE_PROMPT,
+    retries=3
 )
 
 @chat_agent.system_prompt
@@ -25,7 +27,7 @@ def get_chat_system_prompt(ctx: RunContext[str]) -> str:
 
 @chat_agent.tool_plain 
 async def search_news(query: str) -> str:
-    """Search for recent news articles on a query. Returns a summary or error message."""
+    """Recherche les articles d'actualités récents sur une requête. Retourne un résumé ou un message d'erreur."""
     try:
         articles = await get_searched_news(query=query)
         if not articles:
@@ -36,5 +38,6 @@ async def search_news(query: str) -> str:
 
 press_review_agent = Agent(
     'mistral:mistral-small-latest',
-    output_type=PressReviewResponse
+    output_type=PressReviewResponse,
+    retries=3
 )

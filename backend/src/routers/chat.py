@@ -34,6 +34,7 @@ from schemas import (
     PressReviewResponse,
     PressReviewCreateRequest
 )
+# utils
 from utils.mapping import map_history_to_frontend
 from utils.routes import API_BASE_ROUTE, CHAT_ROUTES
 
@@ -141,6 +142,7 @@ def get_chat(
     Récupère l'historique complet d'un fil de discussion spécifique.
     Enforce que seuls les propriétaires peuvent accéder à leurs discussions.
     """
+
     db_chat = db.get(Chat, chat_id)
     if not db_chat:
         raise HTTPException(
@@ -295,7 +297,7 @@ async def generate_press_review(
     except Exception:
         message_history = []    
 
-    try: 
+    try:
         result = await press_review_agent.run(
             user_prompt=f"Generate the press review on the subject : {payload.subject}",
             message_history=message_history

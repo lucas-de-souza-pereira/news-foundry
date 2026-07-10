@@ -4,6 +4,12 @@ type FetchOptions = RequestInit & {
   token?: string;
 };
 
+interface ValidationErrorDetail {
+  loc?: (string | number)[];
+  msg?: string;
+  type?: string;
+}
+
 export async function apiFetch<T>(
   path: string,
   options: FetchOptions = {},
@@ -45,10 +51,28 @@ export async function apiFetch<T>(
   }
 
   if (!res.ok) {
-    const errorData = data as { detail?: string; message?: string } | null;
-    throw new Error(
-      errorData?.detail ?? errorData?.message ?? `HTTP error ${res.status}`,
-    );
+    const errorData = data as { detail?: unknown; message?: string } | null;
+    let errorMessage = `HTTP error ${res.status}`;
+    if (errorData) {
+      if (errorData.detail) {
+        if (typeof errorData.detail === "string") {
+          errorMessage = errorData.detail;
+        } else if (Array.isArray(errorData.detail)) {
+          errorMessage = errorData.detail
+            .map((err: ValidationErrorDetail) => {
+              const location = err.loc ? err.loc.join(".") : "";
+              const message = err.msg || "Validation error";
+              return location ? `${location}: ${message}` : message;
+            })
+            .join(", ");
+        } else {
+          errorMessage = JSON.stringify(errorData.detail);
+        }
+      } else if (errorData.message) {
+        errorMessage = errorData.message;
+      }
+    }
+    throw new Error(errorMessage);
   }
 
   return data as T;

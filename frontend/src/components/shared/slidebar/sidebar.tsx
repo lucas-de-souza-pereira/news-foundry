@@ -1,8 +1,5 @@
 "use client";
 
-// React & Hooks
-import { useEffect } from "react";
-
 // Next.js
 import { useRouter, useParams } from "next/navigation";
 

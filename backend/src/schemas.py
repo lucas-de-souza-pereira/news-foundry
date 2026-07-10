@@ -1,3 +1,4 @@
+from pydantic_ai import ModelMessage
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import List, Dict, Any, Optional
@@ -15,12 +16,20 @@ class TokenData(BaseModel):
     email: str | None = None
 
 
+
+
 # chats
+
+class MessageRead(BaseModel):
+    role: str
+    content: str
+    timestamp: Optional[datetime | str] = None
+
 class ChatRead(BaseModel):
     id: int
     user_id: int
     created_at: datetime
-    history: List[Dict[str, Any]]
+    history: List[MessageRead]
 
     model_config = {
         "from_attributes": True
@@ -33,7 +42,7 @@ class ChatCreateResponse(BaseModel):
     id: int
     user_id: int
     created_at: datetime
-    history: List[Dict[str, Any]]
+    history: List[ModelMessage]
 
 class ChatShortResponse(BaseModel):
     id: int
@@ -45,7 +54,7 @@ class MessageSendRequest(BaseModel):
     content: str
 
 class MessageSendResponse(BaseModel):
-    response: Dict[str,Any]
+    response: MessageRead
 
 
 # news

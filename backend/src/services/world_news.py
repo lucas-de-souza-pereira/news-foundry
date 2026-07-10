@@ -66,8 +66,8 @@ async def get_searched_news(query: str, country: str = "fr", language: str = "fr
         "api-key": WORLD_NEWS_API_KEY,
         "source-country": country,
         "language": language,
-        "query": query,
-        "number": 5
+        "text": query,
+        "number": 10
     }
 
     async with httpx.AsyncClient() as client:

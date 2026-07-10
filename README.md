@@ -21,7 +21,11 @@
 
 1. Cloner le repository
 2. Démarrer le backend aved les instructions du fichier `backend/README.md`
-3. Initialiser un projet Next.js dans un dossier `frontend/`
+3. Initialiser un projet Next.js dans un dossier `frontend/` avec :
+
+```bash
+npm install
+```
 
 ## Choix technologiques
 
@@ -39,29 +43,18 @@
 - **PydanticAI** comme client qui s'intégrera aussi bien avec les autres outils de la stack backend
 - Attention à la **sécurité des données**. On ne veut pas qu’un utilisateur puisse accéder aux chats d’un autre utilisateur ou les modifier.
   - Le produit aura rapidement beaucoup d’utilisateurs professionnels il est donc crucial de garantir le fonctionnement correct de cette fonctionnalité par l'**implémentation de tests automatisés qui s'exécutent par une Github Action**.
-- Pour les sources de news, on utilisera l’API [**WorldNewsAPI**](https://worldnewsapi.com/).
-- Pour déployer on mettra le frontend sur **Vercel** et le backend sur **Railway**.
+- Pour les sources de news, l’API [**WorldNewsAPI**](https://worldnewsapi.com/) est utilisée.
+- Pour le déploiement le frontend est sur **Vercel** et le backend sur **Railway**.
 
 ### Documentation
 
-Une documentation claire devra être rédigée et ajoutée dans un dossier `docs/`.
+La documentation technique complète du projet est disponible dans le dossier `docs/` :
 
-Elle devra inclure des suggestions d'amélioration concernant la qualité et la performance de la partie IA du système. Chaque recommandation doit être illustrée par une une métrique ou un exemple, une proposition d’implémentation réalisable, ainsi qu'un objectif mesurable.
+- [**Architecture & Structure Globale**](docs/architecture.md) : Explique l'organisation générale de la codebase, la séparation des responsabilités entre Next.js et FastAPI, l'arborescence commentée des dossiers et les flux de données.
+- [**Guide des Tests**](docs/testing.md) : Détaille comment exécuter les tests localement avec `uv/pytest`, le choix de SQLite en mémoire pour l'isolation, et les tests de sécurité mis en place pour prévenir les failles de type BOLA.
+- [**Choix Techniques**](docs/decisions.md) : Présente les justifications technologiques (FastAPI asynchrone, SQLModel, PydanticAI type-safe, shadcn/ui).
+- [**Catalogue des Erreurs d'API**](docs/api_errors.md) : Recense tous les codes d'erreur HTTP et messages de détail retournés par le serveur, avec des explications et les comportements recommandés côté frontend pour les gérer.
 
+### Déploiement
 
-Par ailleurs, pour faciliter la maintenance du projet à long terme, le code du projet devra être clair et bien structuré, accompagné de commentaires qui expliquent les sections de code complexes.
-
-### Deploiement
-
-L'url de l'application déployée devra être ajouté dans la documentation.
-
-#### Frontend
-
-Déployer le frontend sur [Vercel](https://vercel.com/dashboard).
-
-#### Backend
-
-Déployer le backend sur [Railway](https://railway.com/dashboard).
-
-> Un Dockerfile est déjà présent pour faciliter le déploiement. Il faudra simplement référencer `backend/` comme "Root Directory" après avoir connecté le repository.
-> La base de donnée postgres peut être créée via Railway dans le même projet que le backend.
+Lien vers le frontend sur [Vercel](https://news-foundry-nu.vercel.app/).

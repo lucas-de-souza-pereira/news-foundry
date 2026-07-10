@@ -25,7 +25,7 @@ interface LoginFormProps extends React.ComponentProps<"form"> {
   isExpired?: boolean;
 }
 
-export default function LoginForm({ isExpired, ...props }: LoginFormProps) {
+export default function LoginForm({ isExpired }: LoginFormProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,20 +43,24 @@ export default function LoginForm({ isExpired, ...props }: LoginFormProps) {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const credentials: LoginCredentials = {
-      email,
-      password,
-    };
+
+    const cleanEmail = email.trim();
+    const cleanPassword = password.trim();
 
     setIsSubmitting(true);
     setError(null);
     setSuccess(null);
 
-    if (!credentials.email || !credentials.password) {
+    if (!cleanEmail || !cleanPassword) {
       setError("L'email et mot de passe sont requis");
       setIsSubmitting(false);
       return;
     }
+
+    const credentials: LoginCredentials = {
+      email: cleanEmail,
+      password: cleanPassword,
+    };
 
     const res = await loginAction(credentials);
     if (res.success) {
@@ -74,7 +78,7 @@ export default function LoginForm({ isExpired, ...props }: LoginFormProps) {
   };
 
   return (
-    <form className="flex flex-col w-full" onSubmit={handleSubmit}>
+    <form className="flex flex-col w-full" onSubmit={handleSubmit} noValidate>
       <div className=" flex flex-col gap-y-3">
         <label htmlFor="email">Adresse email</label>
         <Input
