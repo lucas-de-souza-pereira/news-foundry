@@ -46,7 +46,13 @@ _Note : Une fois le conteneur créé, vous pouvez le gérer avec les commandes s
 uv run --env-file .env src/main.py
 ```
 
-4. Pour démarrer l'interface graphique de MLflow sur le port 5000
+4. Pour lancer les tests :
+
+```bash
+uv run pytest -vv
+```
+
+5. Pour démarrer l'interface graphique de MLflow sur le port 5000
 
 ```bash
 uv run --env-file .env mlflow ui --port 5000

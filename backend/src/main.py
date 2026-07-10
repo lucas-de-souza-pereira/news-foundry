@@ -1,26 +1,40 @@
-from database import init_db
+
+# librairie standard
+
+from contextlib import asynccontextmanager
+import logging
+import os
+import sys
+
+
+# librairies externes
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
-import logging
-from contextlib import asynccontextmanager
-import os
 import mlflow
+import uvicorn
+
+# imports locaux
+from database import init_db
 from routers.auth import router as auth_router
 from routers.chat import router as chat_router
 
-
 logger = logging.getLogger("uvicorn.error")
 
-mlflow_uri = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
-mlflow.set_tracking_uri(mlflow_uri)
 
-try:
-    import mlflow.pydantic_ai
-    mlflow.pydantic_ai.autolog()
-    logger.info(f"MLflow activé. URI: {mlflow_uri}")
-except ImportError as e:
-    logger.warning(f"Impossible d'activer MLflow : {str(e)}")
+is_testing = "pytest" in sys.modules or os.getenv("TESTING") == "1"
+
+if not is_testing:
+    mlflow_uri = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+    mlflow.set_tracking_uri(mlflow_uri)
+
+    try:
+        import mlflow.pydantic_ai
+        mlflow.pydantic_ai.autolog()
+        logger.info(f"MLflow activé. URI: {mlflow_uri}")
+    except ImportError as e:
+        logger.warning(f"Impossible to activate MLflow : {str(e)}")
+else:
+    logger.info("Test mode detected: MLflow disabled to avoid blocking network requests.")
 
 
 @asynccontextmanager
