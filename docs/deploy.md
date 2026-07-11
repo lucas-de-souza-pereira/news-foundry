@@ -1,0 +1,2 @@
+- lien vers le site déployé : https://news-foundry-nu.vercel.app/
+- lien vers le repository github : https://github.com/lucas-de-souza-pereira/news-foundry
